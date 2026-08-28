@@ -24,19 +24,38 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 
 ---
 
-## Fase 2 — Catálogo de Ejercicios (lectura)
+## Fase 2 — Servicio de Ejercicios y Selector
 
-**Objetivo:** Poder ver y buscar los 1324 ejercicios disponibles.
+**Objetivo:** Tener el servicio de datos listo y el componente selector que se usará en la Fase 3 para armar rutinas. El catálogo no es una página independiente, sino un selector contextual dentro del flujo de creación de rutinas.
 
-- [ ] Crear servicio ExerciseService que carga `exercises.json`
-- [ ] Crear página/componente de catálogo de ejercicios
-- [ ] Implementar listado con imágenes (thumbnail)
-- [ ] Implementar búsqueda por nombre
-- [ ] Implementar filtros por body_part y equipment
-- [ ] Crear vista de detalle de ejercicio (instrucciones + GIF animado)
-- [ ] Considerar virtualización si la lista es lenta (CDK Virtual Scroll)
+### 2.1 — Servicio de datos
+- [ ] Crear interfaces TypeScript (Exercise, BodyPart, Equipment)
+- [ ] Crear ExerciseService (providedIn: 'root')
+- [ ] Cargar exercises.json vía HttpClient (una vez, cachear en signal)
+- [ ] Métodos: getByBodyPart(part), search(term, bodyPart?), getById(id)
+- [ ] Extraer lista de body_parts y equipments únicos para los filtros
 
-**Resultado:** Se puede explorar todo el catálogo, buscar y ver detalles con GIF.
+### 2.2 — Componente Selector de Ejercicios
+- [ ] Crear componente reutilizable ExerciseSelector (modal o slide-up)
+- [ ] Paso 1: elegir body_part (grid de categorías con iconos/nombres)
+- [ ] Paso 2: listado filtrado de ejercicios de esa categoría
+- [ ] Búsqueda por nombre dentro de la categoría seleccionada
+- [ ] Cada item muestra: thumbnail + nombre + equipment
+- [ ] Virtual scroll si la categoría tiene muchos items
+- [ ] Al seleccionar → emite el ejercicio elegido al padre
+- [ ] Lazy load de thumbnails (solo los visibles)
+
+### 2.3 — Vista previa del ejercicio
+- [ ] Al tocar un ejercicio en el selector, mostrar detalle rápido
+- [ ] GIF animado (carga solo cuando se abre la preview)
+- [ ] Instrucciones paso a paso (español)
+- [ ] Botón "Seleccionar este ejercicio" para confirmar
+
+### 2.4 — Performance
+- [ ] Verificar scroll fluido en las categorías más grandes
+- [ ] Confirmar que el JSON se carga una sola vez y se reutiliza
+
+**Resultado:** Servicio de datos funcionando + componente selector listo para ser integrado en el CRUD de rutinas (Fase 3).
 
 ---
 
@@ -47,7 +66,7 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 - [ ] Definir modelo de datos para rutinas (localStorage/IndexedDB)
 - [ ] Crear pantalla de configuración de días (toggle activo/inactivo)
 - [ ] Crear pantalla de CRUD ejercicios por día:
-  - Agregar ejercicio (selector del catálogo)
+  - Abrir ExerciseSelector (Fase 2) para elegir ejercicio
   - Configurar: reps, sets, unidad, rest_time, rest_time_set
   - Editar ejercicio existente
   - Eliminar con confirmación
