@@ -3,7 +3,7 @@ import { Component, output } from '@angular/core';
 @Component({
   selector: 'app-header',
   template: `
-    <header class="sticky top-0 z-40 flex items-center justify-between bg-indigo-600 px-4 py-3 text-white shadow-md">
+    <header class="sticky top-0 z-40 flex items-center justify-between bg-indigo-600 px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] text-white shadow-md">
       <button
         (click)="menuToggle.emit()"
         aria-label="Abrir menú"

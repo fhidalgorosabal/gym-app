@@ -86,6 +86,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                       [src]="exercise.image"
                       [alt]="exercise.name"
                       loading="lazy"
+                      decoding="async"
                       class="h-12 w-12 rounded-lg bg-gray-100 object-cover"
                     />
                     <div class="min-w-0 flex-1">
