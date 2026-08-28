@@ -1,2 +1,6 @@
-<p class="text-md bg-blue-500 text-white p-4">Hello, World!</p>
-<router-outlet />
+<app-header (menuToggle)="toggleMenu()" />
+<app-menu [open]="menuOpen()" (closed)="closeMenu()" />
+
+<main class="min-h-screen bg-gray-50 pt-0">
+  <router-outlet />
+</main>
