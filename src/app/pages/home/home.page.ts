@@ -1,6 +1,7 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutineService } from '../../services/routine.service';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-home',
@@ -8,31 +9,31 @@ import { RoutineService } from '../../services/routine.service';
     <div class="flex min-h-[80vh] flex-col items-center justify-center p-6 text-center">
       <div class="text-6xl">🏋️</div>
       <h2 class="mt-4 text-2xl font-bold text-gray-800">GymApp</h2>
-      <p class="mt-2 text-gray-500">Tu rutina de ejercicios personalizada</p>
+      <p class="mt-2 text-gray-500">{{ lang.t('home.subtitle') }}</p>
 
       @if (todayIsActive()) {
         <button
           (click)="startTodayRoutine()"
           class="mt-8 rounded-xl bg-red-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-red-700 hover:shadow-xl active:scale-95"
         >
-          Hacer rutina de hoy
+          {{ lang.t('home.doTodayRoutine') }}
           <span class="ml-1 font-normal opacity-80">{{ todayName() }}</span>
         </button>
 
         <p class="mt-3 text-sm text-gray-400">
-          {{ todayExerciseCount() }} ejercicios configurados
+          {{ todayExerciseCount() }} {{ lang.t('home.exercisesConfigured') }}
         </p>
       } @else {
         <div class="mt-8 rounded-xl bg-gray-100 px-6 py-4">
           <p class="text-sm text-gray-600">
-            No hay rutina configurada para hoy
+            {{ lang.t('home.noRoutineToday') }}
             <span class="font-medium">({{ todayName() }})</span>
           </p>
           <button
             (click)="goToSetup()"
             class="mt-3 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
-            Configurar rutina
+            {{ lang.t('home.configureRoutine') }}
           </button>
         </div>
       }
@@ -40,9 +41,10 @@ import { RoutineService } from '../../services/routine.service';
   `
 })
 export default class HomePage {
+  readonly lang = inject(LanguageService);
   private todayDayId = this.getTodayDayId();
 
-  todayName = computed(() => this.routineService.getDayName(this.todayDayId));
+  todayName = computed(() => this.lang.dayName(this.todayDayId));
 
   todayIsActive = computed(() => {
     const days = this.routineService.allDays();

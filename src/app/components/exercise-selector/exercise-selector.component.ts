@@ -1,6 +1,7 @@
-import { Component, computed, input, output, signal, OnInit } from '@angular/core';
-import { Exercise, BodyPart, BODY_PARTS, BODY_PART_LABELS } from '../../models/exercise.model';
+import { Component, computed, inject, input, output, signal, OnInit } from '@angular/core';
+import { Exercise, BodyPart, BODY_PARTS } from '../../models/exercise.model';
 import { ExerciseService } from '../../services/exercise.service';
+import { LanguageService } from '../../services/language.service';
 import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.component';
 
 @Component({
@@ -19,7 +20,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
             @if (selectedBodyPart()) {
               {{ getBodyPartLabel(selectedBodyPart()!) }}
             } @else {
-              Seleccionar ejercicio
+              {{ lang.t('selector.title') }}
             }
           </h2>
           <button
@@ -55,7 +56,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                     <span class="flex h-12 w-12 items-center justify-center text-3xl">{{ getBodyPartFallbackIcon(part) }}</span>
                   }
                   <span class="mt-1 text-sm font-medium text-gray-700">{{ getBodyPartLabel(part) }}</span>
-                  <span class="text-xs text-gray-400">{{ getExerciseCount(part) }} ejercicios</span>
+                  <span class="text-xs text-gray-400">{{ getExerciseCount(part) }} {{ lang.t('exercises') }}</span>
                 </button>
               }
             </div>
@@ -67,7 +68,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                 <button
                   (click)="goBack()"
                   class="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
-                  aria-label="Volver a categorías"
+                  [attr.aria-label]="lang.t('back')"
                 >
                   <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -75,13 +76,13 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                 </button>
                 <input
                   type="text"
-                  placeholder="Buscar ejercicio..."
+                  [placeholder]="lang.t('selector.search')"
                   [value]="searchTerm()"
                   (input)="onSearch($event)"
                   class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                 />
               </div>
-              <p class="mt-1 text-xs text-gray-400">{{ filteredExercises().length }} ejercicios</p>
+              <p class="mt-1 text-xs text-gray-400">{{ filteredExercises().length }} {{ lang.t('exercises') }}</p>
             </div>
 
             <!-- Lista de ejercicios -->
@@ -101,7 +102,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                     />
                     <div class="min-w-0 flex-1">
                       <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name }}</p>
-                      <p class="text-xs text-gray-500">{{ exercise.equipment }} · {{ exercise.target }}</p>
+                      <p class="text-xs text-gray-500">{{ lang.term(exercise.equipment) }} · {{ lang.term(exercise.target) }}</p>
                     </div>
                     <svg class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -110,7 +111,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                 </li>
               } @empty {
                 <li class="py-8 text-center text-gray-400">
-                  No se encontraron ejercicios
+                  {{ lang.t('selector.noResults') }}
                 </li>
               }
             </ul>
@@ -133,6 +134,7 @@ export class ExerciseSelectorComponent implements OnInit {
   closed = output<void>();
 
   readonly bodyParts = BODY_PARTS;
+  readonly lang = inject(LanguageService);
 
   selectedBodyPart = signal<BodyPart | null>(null);
   searchTerm = signal('');
@@ -153,7 +155,7 @@ export class ExerciseSelectorComponent implements OnInit {
   }
 
   getBodyPartLabel(part: BodyPart): string {
-    return BODY_PART_LABELS[part];
+    return this.lang.bodyPartLabel(part);
   }
 
   /** Ruta de la imagen de cada categoría. `null` si no tiene imagen (se usa emoji de respaldo). */

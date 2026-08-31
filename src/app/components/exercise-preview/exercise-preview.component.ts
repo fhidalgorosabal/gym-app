@@ -1,5 +1,6 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Exercise } from '../../models/exercise.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-exercise-preview',
@@ -48,23 +49,23 @@ import { Exercise } from '../../models/exercise.model';
         <!-- Metadata -->
         <div class="flex flex-wrap gap-2 px-4 pt-3">
           <span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
-            {{ ex.target }}
+            {{ langSvc.term(ex.target) }}
           </span>
           <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
-            {{ ex.equipment }}
+            {{ langSvc.term(ex.equipment) }}
           </span>
           @for (muscle of ex.secondary_muscles; track muscle) {
             <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500">
-              {{ muscle }}
+              {{ langSvc.term(muscle) }}
             </span>
           }
         </div>
 
         <!-- Instrucciones paso a paso -->
         <div class="px-4 py-4">
-          <h4 class="mb-2 text-sm font-semibold text-gray-700">Instrucciones</h4>
+          <h4 class="mb-2 text-sm font-semibold text-gray-700">{{ langSvc.t('selector.instructions') }}</h4>
           <ol class="list-inside list-decimal space-y-2">
-            @for (step of ex.instruction_steps['es']; track $index) {
+            @for (step of ex.instruction_steps[lang()]; track $index) {
               <li class="text-sm leading-relaxed text-gray-600">{{ step }}</li>
             }
           </ol>
@@ -76,7 +77,7 @@ import { Exercise } from '../../models/exercise.model';
             (click)="confirmed.emit(ex)"
             class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
           >
-            Seleccionar este ejercicio
+            {{ langSvc.t('selector.selectThis') }}
           </button>
         </div>
       </div>
@@ -84,6 +85,12 @@ import { Exercise } from '../../models/exercise.model';
   `
 })
 export class ExercisePreviewComponent {
+  private languageService = inject(LanguageService);
+  /** Servicio de idioma, para traducir textos de UI con t(). */
+  readonly langSvc = this.languageService;
+  /** Idioma actual, para seleccionar los pasos de instrucciones traducidos. */
+  readonly lang = this.languageService.lang;
+
   exercise = input.required<Exercise | null>();
   confirmed = output<Exercise>();
   closed = output<void>();

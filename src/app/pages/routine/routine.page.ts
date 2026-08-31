@@ -1,7 +1,8 @@
-import { Component, computed, input, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, inject, input, signal, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { RoutineService } from '../../services/routine.service';
 import { SoundService } from '../../services/sound.service';
+import { LanguageService } from '../../services/language.service';
 import { RoutineExercise } from '../../models/routine.model';
 
 type RoutineState = 'ready' | 'exercising' | 'resting-set' | 'resting-exercise' | 'completed';
@@ -22,21 +23,21 @@ interface ExerciseProgress {
           <!-- RESUMEN FINAL -->
           <div class="flex min-h-[70vh] flex-col items-center justify-center text-center">
             <div class="text-6xl">🎉</div>
-            <h2 class="mt-4 text-2xl font-bold text-gray-800">¡Rutina completada!</h2>
+            <h2 class="mt-4 text-2xl font-bold text-gray-800">{{ lang.t('routine.completedTitle') }}</h2>
             <p class="mt-2 text-gray-500">{{ dayName() }}</p>
 
             <div class="mt-6 grid w-full max-w-xs grid-cols-2 gap-4">
               <div class="rounded-xl bg-red-50 p-4 text-center">
                 <p class="text-2xl font-bold text-red-600">{{ exercises().length }}</p>
-                <p class="text-xs text-gray-500">Ejercicios</p>
+                <p class="text-xs text-gray-500">{{ lang.t('routine.exercisesLabel') }}</p>
               </div>
               <div class="rounded-xl bg-green-50 p-4 text-center">
                 <p class="text-2xl font-bold text-green-600">{{ totalSetsCompleted() }}</p>
-                <p class="text-xs text-gray-500">Series totales</p>
+                <p class="text-xs text-gray-500">{{ lang.t('routine.totalSets') }}</p>
               </div>
               <div class="col-span-2 rounded-xl bg-amber-50 p-4 text-center">
                 <p class="text-2xl font-bold text-amber-600">{{ formatTime(elapsedTime()) }}</p>
-                <p class="text-xs text-gray-500">Tiempo total</p>
+                <p class="text-xs text-gray-500">{{ lang.t('routine.totalTime') }}</p>
               </div>
             </div>
 
@@ -44,7 +45,7 @@ interface ExerciseProgress {
               (click)="goHome()"
               class="mt-8 rounded-xl bg-red-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700"
             >
-              Volver al inicio
+              {{ lang.t('routine.backHome') }}
             </button>
           </div>
         }
@@ -55,7 +56,7 @@ interface ExerciseProgress {
             <div>
               <h2 class="text-xl font-bold text-gray-800">{{ dayName() }}</h2>
               <p class="text-sm text-gray-500">
-                {{ completedExercises() }}/{{ exercises().length }} ejercicios
+                {{ completedExercises() }}/{{ exercises().length }} {{ lang.t('exercises') }}
               </p>
             </div>
             <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
@@ -75,7 +76,7 @@ interface ExerciseProgress {
           @if (routineState() === 'resting-set' || routineState() === 'resting-exercise') {
             <div class="mt-4 rounded-2xl bg-red-600 p-6 text-center text-white shadow-lg">
               <p class="text-sm font-medium opacity-80">
-                {{ routineState() === 'resting-set' ? 'Descanso entre series' : 'Descanso entre ejercicios' }}
+                {{ routineState() === 'resting-set' ? lang.t('routine.restBetweenSets') : lang.t('routine.restBetweenExercises') }}
               </p>
               <p class="mt-2 text-5xl font-bold tabular-nums">{{ formatTime(restTimeRemaining()) }}</p>
               <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-white/20">
@@ -88,7 +89,7 @@ interface ExerciseProgress {
                 (click)="skipRest()"
                 class="mt-4 rounded-lg bg-white/20 px-4 py-2 text-sm font-medium hover:bg-white/30"
               >
-                Saltar descanso
+                {{ lang.t('routine.skipRest') }}
               </button>
             </div>
           }
@@ -131,7 +132,7 @@ interface ExerciseProgress {
                   <div class="min-w-0 flex-1">
                     <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name }}</p>
                     <p class="text-xs text-gray-500">
-                      {{ getProgress(exercise.id).currentSet }}/{{ exercise.sets }} series · {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? 'reps' : 'min' }}
+                      {{ getProgress(exercise.id).currentSet }}/{{ exercise.sets }} {{ lang.t('routine.series') }} · {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('unit.repetitionsShort') : lang.t('unit.minutesShort') }}
                     </p>
                   </div>
                 </button>
@@ -141,13 +142,13 @@ interface ExerciseProgress {
                   <div class="border-t bg-gray-50 px-4 py-4">
                     <!-- Indicador de serie actual -->
                     <div class="text-center">
-                      <p class="text-sm text-gray-500">Serie actual</p>
+                      <p class="text-sm text-gray-500">{{ lang.t('routine.currentSet') }}</p>
                       <p class="text-3xl font-bold text-red-600">
                         {{ getProgress(exercise.id).currentSet + 1 }}
                         <span class="text-lg text-gray-400">/ {{ exercise.sets }}</span>
                       </p>
                       <p class="mt-1 text-sm text-gray-600">
-                        {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? 'repeticiones' : 'minutos' }}
+                        {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('routine.repetitions') : lang.t('routine.minutes') }}
                       </p>
                     </div>
 
@@ -170,9 +171,9 @@ interface ExerciseProgress {
                       class="mt-4 w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800 disabled:opacity-50"
                     >
                       @if (getProgress(exercise.id).currentSet + 1 >= exercise.sets) {
-                        ¡Terminé última serie! ✓
+                        {{ lang.t('routine.finishLastSet') }}
                       } @else {
-                        Terminé la serie →
+                        {{ lang.t('routine.finishSet') }}
                       }
                     </button>
                   </div>
@@ -181,7 +182,7 @@ interface ExerciseProgress {
                 <!-- Ejercicio completado -->
                 @if (getProgress(exercise.id).completed) {
                   <div class="border-t bg-green-50 px-4 py-2 text-center">
-                    <p class="text-sm font-medium text-green-700">¡Completado! ✓</p>
+                    <p class="text-sm font-medium text-green-700">{{ lang.t('routine.exerciseCompleted') }}</p>
                   </div>
                 }
               </li>
@@ -195,6 +196,7 @@ interface ExerciseProgress {
 export default class RoutinePage implements OnInit, OnDestroy {
   day = input.required<string>();
 
+  readonly lang = inject(LanguageService);
   routineState = signal<RoutineState>('ready');
   expandedIndex = signal<number>(0);
   progress = signal<ExerciseProgress[]>([]);
@@ -206,7 +208,7 @@ export default class RoutinePage implements OnInit, OnDestroy {
   private elapsedInterval: ReturnType<typeof setInterval> | null = null;
 
   dayId = computed(() => Number(this.day()));
-  dayName = computed(() => this.routineService.getDayName(this.dayId()));
+  dayName = computed(() => this.lang.dayName(this.dayId()));
   exercises = computed(() => this.routineService.getRoutine(this.dayId()));
 
   completedExercises = computed(() =>
