@@ -41,7 +41,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
               @for (part of bodyParts; track part) {
                 <button
                   (click)="selectBodyPart(part)"
-                  class="flex flex-col items-center justify-center rounded-xl border-2 border-gray-200 p-4 transition-all hover:border-indigo-500 hover:bg-indigo-50 active:scale-95"
+                  class="flex flex-col items-center justify-center rounded-xl border-2 border-gray-200 p-4 transition-all hover:border-red-500 hover:bg-red-50 active:scale-95"
                 >
                   <span class="text-2xl">{{ getBodyPartIcon(part) }}</span>
                   <span class="mt-1 text-sm font-medium text-gray-700">{{ getBodyPartLabel(part) }}</span>
@@ -68,7 +68,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                   placeholder="Buscar ejercicio..."
                   [value]="searchTerm()"
                   (input)="onSearch($event)"
-                  class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  class="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                 />
               </div>
               <p class="mt-1 text-xs text-gray-400">{{ filteredExercises().length }} ejercicios</p>
@@ -80,7 +80,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                 <li>
                   <button
                     (click)="selectExercise(exercise)"
-                    class="flex w-full items-center gap-3 py-3 text-left transition-colors hover:bg-gray-50 active:bg-indigo-50"
+                    class="flex w-full items-center gap-3 py-3 text-left transition-colors hover:bg-gray-50 active:bg-red-50"
                   >
                     <img
                       [src]="exercise.image"

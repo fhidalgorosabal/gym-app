@@ -26,8 +26,8 @@ interface ExerciseProgress {
             <p class="mt-2 text-gray-500">{{ dayName() }}</p>
 
             <div class="mt-6 grid w-full max-w-xs grid-cols-2 gap-4">
-              <div class="rounded-xl bg-indigo-50 p-4 text-center">
-                <p class="text-2xl font-bold text-indigo-600">{{ exercises().length }}</p>
+              <div class="rounded-xl bg-red-50 p-4 text-center">
+                <p class="text-2xl font-bold text-red-600">{{ exercises().length }}</p>
                 <p class="text-xs text-gray-500">Ejercicios</p>
               </div>
               <div class="rounded-xl bg-green-50 p-4 text-center">
@@ -42,7 +42,7 @@ interface ExerciseProgress {
 
             <button
               (click)="goHome()"
-              class="mt-8 rounded-xl bg-indigo-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
+              class="mt-8 rounded-xl bg-red-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700"
             >
               Volver al inicio
             </button>
@@ -66,14 +66,14 @@ interface ExerciseProgress {
           <!-- Barra de progreso general -->
           <div class="mt-3 h-2 overflow-hidden rounded-full bg-gray-200">
             <div
-              class="h-full rounded-full bg-indigo-600 transition-all duration-300"
+              class="h-full rounded-full bg-red-600 transition-all duration-300"
               [style.width.%]="overallProgress()"
             ></div>
           </div>
 
           <!-- TIMER DE DESCANSO (cuando está activo) -->
           @if (routineState() === 'resting-set' || routineState() === 'resting-exercise') {
-            <div class="mt-4 rounded-2xl bg-indigo-600 p-6 text-center text-white shadow-lg">
+            <div class="mt-4 rounded-2xl bg-red-600 p-6 text-center text-white shadow-lg">
               <p class="text-sm font-medium opacity-80">
                 {{ routineState() === 'resting-set' ? 'Descanso entre series' : 'Descanso entre ejercicios' }}
               </p>
@@ -101,13 +101,13 @@ interface ExerciseProgress {
                 <button
                   (click)="expandExercise(i)"
                   class="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors"
-                  [class.bg-indigo-50]="expandedIndex() === i"
+                  [class.bg-red-50]="expandedIndex() === i"
                   [disabled]="routineState() === 'resting-set' || routineState() === 'resting-exercise'"
                 >
                   <!-- Estado -->
                   <div class="flex h-8 w-8 items-center justify-center rounded-full"
                     [class.bg-green-100]="getProgress(exercise.id).completed"
-                    [class.bg-indigo-100]="expandedIndex() === i && !getProgress(exercise.id).completed"
+                    [class.bg-red-100]="expandedIndex() === i && !getProgress(exercise.id).completed"
                     [class.bg-gray-100]="expandedIndex() !== i && !getProgress(exercise.id).completed"
                   >
                     @if (getProgress(exercise.id).completed) {
@@ -116,7 +116,7 @@ interface ExerciseProgress {
                       </svg>
                     } @else {
                       <span class="text-xs font-bold"
-                        [class.text-indigo-600]="expandedIndex() === i"
+                        [class.text-red-600]="expandedIndex() === i"
                         [class.text-gray-400]="expandedIndex() !== i"
                       >{{ i + 1 }}</span>
                     }
@@ -142,7 +142,7 @@ interface ExerciseProgress {
                     <!-- Indicador de serie actual -->
                     <div class="text-center">
                       <p class="text-sm text-gray-500">Serie actual</p>
-                      <p class="text-3xl font-bold text-indigo-600">
+                      <p class="text-3xl font-bold text-red-600">
                         {{ getProgress(exercise.id).currentSet + 1 }}
                         <span class="text-lg text-gray-400">/ {{ exercise.sets }}</span>
                       </p>
@@ -157,7 +157,7 @@ interface ExerciseProgress {
                         <div
                           class="h-3 w-3 rounded-full"
                           [class.bg-green-500]="$index < getProgress(exercise.id).currentSet"
-                          [class.bg-indigo-500]="$index === getProgress(exercise.id).currentSet"
+                          [class.bg-red-500]="$index === getProgress(exercise.id).currentSet"
                           [class.bg-gray-300]="$index > getProgress(exercise.id).currentSet"
                         ></div>
                       }
@@ -167,7 +167,7 @@ interface ExerciseProgress {
                     <button
                       (click)="completeSet(exercise)"
                       [disabled]="routineState() === 'resting-set' || routineState() === 'resting-exercise'"
-                      class="mt-4 w-full rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50"
+                      class="mt-4 w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800 disabled:opacity-50"
                     >
                       @if (getProgress(exercise.id).currentSet + 1 >= exercise.sets) {
                         ¡Terminé última serie! ✓

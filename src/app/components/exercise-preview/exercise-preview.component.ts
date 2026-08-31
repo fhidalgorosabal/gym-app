@@ -36,7 +36,7 @@ import { Exercise } from '../../models/exercise.model';
             />
             @if (!gifLoaded) {
               <div class="absolute inset-0 flex items-center justify-center rounded-xl bg-gray-100">
-                <svg class="h-8 w-8 animate-spin text-indigo-400" fill="none" viewBox="0 0 24 24">
+                <svg class="h-8 w-8 animate-spin text-red-400" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -47,7 +47,7 @@ import { Exercise } from '../../models/exercise.model';
 
         <!-- Metadata -->
         <div class="flex flex-wrap gap-2 px-4 pt-3">
-          <span class="rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+          <span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700">
             {{ ex.target }}
           </span>
           <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600">
@@ -74,7 +74,7 @@ import { Exercise } from '../../models/exercise.model';
         <div class="sticky bottom-0 border-t bg-white px-4 py-3">
           <button
             (click)="confirmed.emit(ex)"
-            class="w-full rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 active:bg-indigo-800"
+            class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
           >
             Seleccionar este ejercicio
           </button>

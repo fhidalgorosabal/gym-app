@@ -13,7 +13,7 @@ import { RoutineService } from '../../services/routine.service';
       @if (todayIsActive()) {
         <button
           (click)="startTodayRoutine()"
-          class="mt-8 rounded-xl bg-indigo-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-indigo-700 hover:shadow-xl active:scale-95"
+          class="mt-8 rounded-xl bg-red-600 px-8 py-4 text-base font-semibold text-white shadow-lg transition-all hover:bg-red-700 hover:shadow-xl active:scale-95"
         >
           Hacer rutina de hoy
           <span class="ml-1 font-normal opacity-80">{{ todayName() }}</span>
@@ -30,7 +30,7 @@ import { RoutineService } from '../../services/routine.service';
           </p>
           <button
             (click)="goToSetup()"
-            class="mt-3 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+            class="mt-3 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
           >
             Configurar rutina
           </button>

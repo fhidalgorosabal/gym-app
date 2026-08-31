@@ -76,7 +76,7 @@ import { Exercise } from '../../models/exercise.model';
                 <!-- Acciones -->
                 <button
                   (click)="toggleEdit(exercise.id)"
-                  class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-indigo-600"
+                  class="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-red-600"
                   aria-label="Editar ejercicio"
                 >
                   <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -107,7 +107,7 @@ import { Exercise } from '../../models/exercise.model';
                         (ngModelChange)="updateField(exercise.id, 'sets', $event)"
                         min="1"
                         max="20"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       />
                     </div>
                     <!-- Reps -->
@@ -119,7 +119,7 @@ import { Exercise } from '../../models/exercise.model';
                         (ngModelChange)="updateField(exercise.id, 'reps', $event)"
                         min="1"
                         max="100"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       />
                     </div>
                     <!-- Unidad -->
@@ -128,7 +128,7 @@ import { Exercise } from '../../models/exercise.model';
                       <select
                         [ngModel]="exercise.unit"
                         (ngModelChange)="updateField(exercise.id, 'unit', $event)"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       >
                         <option value="Repeticiones">Repeticiones</option>
                         <option value="Minutos">Minutos</option>
@@ -144,7 +144,7 @@ import { Exercise } from '../../models/exercise.model';
                         min="0"
                         max="600"
                         step="10"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       />
                     </div>
                     <!-- Descanso entre ejercicios -->
@@ -157,13 +157,13 @@ import { Exercise } from '../../models/exercise.model';
                         min="0"
                         max="600"
                         step="10"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       />
                     </div>
                   </div>
                   <button
                     (click)="editingId.set(null)"
-                    class="mt-3 w-full rounded-lg bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                    class="mt-3 w-full rounded-lg bg-red-600 py-2 text-sm font-medium text-white hover:bg-red-700"
                   >
                     Listo
                   </button>
@@ -186,7 +186,7 @@ import { Exercise } from '../../models/exercise.model';
       <!-- Botón agregar -->
       <button
         (click)="openSelector()"
-        class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700 active:bg-indigo-800"
+        class="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
       >
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />

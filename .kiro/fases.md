@@ -8,17 +8,17 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 
 **Objetivo:** Estructura base de la app con navegación funcionando.
 
-- [ ] Configurar app.config.ts (provideRouter, provideHttpClient, locale ES)
-- [ ] Crear layout base: Header + router-outlet
-- [ ] Crear componente Header con título y hamburger
-- [ ] Crear componente Menu lateral (slide-over)
-- [ ] Definir rutas principales con lazy loading:
+- [x] Configurar app.config.ts (provideRouter, provideHttpClient, locale ES)
+- [x] Crear layout base: Header + router-outlet
+- [x] Crear componente Header con título y hamburger
+- [x] Crear componente Menu lateral (slide-over)
+- [x] Definir rutas principales con lazy loading:
   - `/home` → Home
   - `/routine/:day` → Ejecución de rutina
   - `/setup` → Configurar días
   - `/setup/:day` → CRUD ejercicios del día
-- [ ] Crear páginas placeholder para cada ruta
-- [ ] Verificar navegación funciona en browser
+- [x] Crear páginas placeholder para cada ruta
+- [x] Verificar navegación funciona en browser
 
 **Resultado:** App navegable con estructura de pantallas vacías.
 
@@ -29,31 +29,31 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 **Objetivo:** Tener el servicio de datos listo y el componente selector que se usará en la Fase 3 para armar rutinas. El catálogo no es una página independiente, sino un selector contextual dentro del flujo de creación de rutinas.
 
 ### 2.1 — Servicio de datos
-- [ ] Crear interfaces TypeScript (Exercise, BodyPart, Equipment)
-- [ ] Crear ExerciseService (providedIn: 'root')
-- [ ] Cargar exercises.json vía HttpClient (una vez, cachear en signal)
-- [ ] Métodos: getByBodyPart(part), search(term, bodyPart?), getById(id)
-- [ ] Extraer lista de body_parts y equipments únicos para los filtros
+- [x] Crear interfaces TypeScript (Exercise, BodyPart, Equipment)
+- [x] Crear ExerciseService (providedIn: 'root')
+- [x] Cargar exercises.json vía HttpClient (una vez, cachear en signal)
+- [x] Métodos: getByBodyPart(part), search(term, bodyPart?), getById(id)
+- [x] Extraer lista de body_parts y equipments únicos para los filtros
 
 ### 2.2 — Componente Selector de Ejercicios
-- [ ] Crear componente reutilizable ExerciseSelector (modal o slide-up)
-- [ ] Paso 1: elegir body_part (grid de categorías con iconos/nombres)
-- [ ] Paso 2: listado filtrado de ejercicios de esa categoría
-- [ ] Búsqueda por nombre dentro de la categoría seleccionada
-- [ ] Cada item muestra: thumbnail + nombre + equipment
-- [ ] Virtual scroll si la categoría tiene muchos items
-- [ ] Al seleccionar → emite el ejercicio elegido al padre
-- [ ] Lazy load de thumbnails (solo los visibles)
+- [x] Crear componente reutilizable ExerciseSelector (modal o slide-up)
+- [x] Paso 1: elegir body_part (grid de categorías con iconos/nombres)
+- [x] Paso 2: listado filtrado de ejercicios de esa categoría
+- [x] Búsqueda por nombre dentro de la categoría seleccionada
+- [x] Cada item muestra: thumbnail + nombre + equipment
+- [x] Virtual scroll si la categoría tiene muchos items
+- [x] Al seleccionar → emite el ejercicio elegido al padre
+- [x] Lazy load de thumbnails (solo los visibles)
 
 ### 2.3 — Vista previa del ejercicio
-- [ ] Al tocar un ejercicio en el selector, mostrar detalle rápido
-- [ ] GIF animado (carga solo cuando se abre la preview)
-- [ ] Instrucciones paso a paso (español)
-- [ ] Botón "Seleccionar este ejercicio" para confirmar
+- [x] Al tocar un ejercicio en el selector, mostrar detalle rápido
+- [x] GIF animado (carga solo cuando se abre la preview)
+- [x] Instrucciones paso a paso (español)
+- [x] Botón "Seleccionar este ejercicio" para confirmar
 
 ### 2.4 — Performance
-- [ ] Verificar scroll fluido en las categorías más grandes
-- [ ] Confirmar que el JSON se carga una sola vez y se reutiliza
+- [x] Verificar scroll fluido en las categorías más grandes
+- [x] Confirmar que el JSON se carga una sola vez y se reutiliza
 
 **Resultado:** Servicio de datos funcionando + componente selector listo para ser integrado en el CRUD de rutinas (Fase 3).
 
@@ -63,16 +63,16 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 
 **Objetivo:** Configurar qué ejercicios hacer cada día.
 
-- [ ] Definir modelo de datos para rutinas (localStorage/IndexedDB)
-- [ ] Crear pantalla de configuración de días (toggle activo/inactivo)
-- [ ] Crear pantalla de CRUD ejercicios por día:
+- [x] Definir modelo de datos para rutinas (localStorage/IndexedDB)
+- [x] Crear pantalla de configuración de días (toggle activo/inactivo)
+- [x] Crear pantalla de CRUD ejercicios por día:
   - Abrir ExerciseSelector (Fase 2) para elegir ejercicio
   - Configurar: reps, sets, unidad, rest_time, rest_time_set
   - Editar ejercicio existente
   - Eliminar con confirmación
   - Reordenar (drag & drop o flechas)
-- [ ] Persistir en localStorage (offline-first)
-- [ ] Menú lateral muestra solo días activos
+- [x] Persistir en localStorage (offline-first)
+- [x] Menú lateral muestra solo días activos
 
 **Resultado:** El usuario puede crear su rutina personalizada sin backend.
 
@@ -82,14 +82,14 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 
 **Objetivo:** Entrenar con la rutina del día, guiado por la app.
 
-- [ ] Crear pantalla de ejecución de rutina
-- [ ] Implementar acordeón de ejercicios (uno expandido a la vez)
-- [ ] Mostrar serie actual y progreso
-- [ ] Timer de descanso entre sets (configurable por ejercicio)
-- [ ] Timer de descanso entre ejercicios
-- [ ] Notificación sonora al terminar descanso
-- [ ] Marcar ejercicio como completado
-- [ ] Vista de resumen al terminar toda la rutina
+- [x] Crear pantalla de ejecución de rutina
+- [x] Implementar acordeón de ejercicios (uno expandido a la vez)
+- [x] Mostrar serie actual y progreso
+- [x] Timer de descanso entre sets (configurable por ejercicio)
+- [x] Timer de descanso entre ejercicios
+- [x] Notificación sonora al terminar descanso
+- [x] Marcar ejercicio como completado
+- [x] Vista de resumen al terminar toda la rutina
 
 **Resultado:** Experiencia de entrenamiento guiado, similar a PlanixFit.
 
@@ -99,13 +99,13 @@ Desarrollo progresivo de GymApp, empezando con lo mínimo funcional y puliendo e
 
 **Objetivo:** Compilar a Android y optimizar para dispositivo.
 
-- [ ] Instalar y configurar Capacitor (ver setup-capacitor.md)
-- [ ] Generar íconos y splash screen
-- [ ] Ajustar UI para pantallas móviles (safe areas, status bar)
-- [ ] Probar en emulador y dispositivo real
-- [ ] Optimizar GIFs (lazy load, solo el visible)
-- [ ] Verificar que audio funciona en Android
-- [ ] Generar APK de test
+- [x] Instalar y configurar Capacitor (ver setup-capacitor.md)
+- [x] Generar íconos y splash screen
+- [x] Ajustar UI para pantallas móviles (safe areas, status bar)
+- [x] Probar en emulador y dispositivo real
+- [x] Optimizar GIFs (lazy load, solo el visible)
+- [x] Verificar que audio funciona en Android
+- [x] Generar APK de test
 
 **Resultado:** APK funcional que se puede instalar en cualquier Android.
 

@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'GymApp',
   webDir: 'dist/gym-app/browser',
   android: {
-    backgroundColor: '#4f46e5' // indigo-600, color del header
+    backgroundColor: '#dc2626' // red-600, color del header
   }
 };
 

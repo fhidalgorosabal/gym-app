@@ -20,12 +20,12 @@ import { RoutineService } from '../../services/routine.service';
       [class.translate-x-0]="open()"
       [class.-translate-x-full]="!open()"
     >
-      <div class="flex items-center justify-between border-b px-4 py-3">
-        <span class="text-lg font-bold text-indigo-600">GymApp</span>
+      <div class="flex items-center justify-between border-b px-4 pb-3 pt-10">
+        <span class="text-lg font-bold text-red-600">GymApp</span>
         <button
           (click)="closed.emit()"
           aria-label="Cerrar menú"
-          class="rounded-md p-1 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          class="rounded-md p-1 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -38,7 +38,7 @@ import { RoutineService } from '../../services/routine.service';
         <li>
           <a
             routerLink="/home"
-            routerLinkActive="bg-indigo-50 text-indigo-700"
+            routerLinkActive="bg-red-50 text-red-700"
             (click)="closed.emit()"
             class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
           >
@@ -58,7 +58,7 @@ import { RoutineService } from '../../services/routine.service';
             <li>
               <a
                 [routerLink]="['/routine', day.id]"
-                routerLinkActive="bg-indigo-50 text-indigo-700"
+                routerLinkActive="bg-red-50 text-red-700"
                 (click)="closed.emit()"
                 class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
               >
@@ -80,7 +80,7 @@ import { RoutineService } from '../../services/routine.service';
         <li>
           <a
             routerLink="/setup"
-            routerLinkActive="bg-indigo-50 text-indigo-700"
+            routerLinkActive="bg-red-50 text-red-700"
             (click)="closed.emit()"
             class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
           >
