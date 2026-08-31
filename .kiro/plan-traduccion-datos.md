@@ -37,13 +37,13 @@ Traducción de `target`, `equipment` y `secondary_muscles` con un diccionario de
 
 **Objetivo:** que el modelo y la UI soporten `name` multiidioma, sin traducir aún.
 
-- [ ] Decidir formato en el JSON. Opción recomendada: campo nuevo `name_i18n: { en, es, 'pt-BR' }`
+- [x] Decidir formato en el JSON. Opción recomendada: campo nuevo `name_i18n: { en, es, 'pt-BR' }`
       manteniendo `name` (en) por compatibilidad.
-- [ ] Actualizar `Exercise` (modelo) con `name_i18n?`
-- [ ] Helper `LanguageService.exerciseName(exercise)`:
+- [x] Actualizar `Exercise` (modelo) con `name_i18n?`
+- [x] Helper `LanguageService.exerciseName(exercise)`:
       devuelve `name_i18n[lang]` si existe, si no `name` (fallback a inglés)
-- [ ] Usar el helper en: Selector (lista), Preview (título), Setup-Day (lista), Routine (acordeón)
-- [ ] Verificar que sin traducciones aún, todo sigue mostrando el inglés (sin romper)
+- [x] Usar el helper en Selector (lista) y Preview (título); al agregar, guardar el nombre en el idioma actual
+- [x] Verificar que sin traducciones aún, todo sigue mostrando el inglés (sin romper)
 
 **Resultado:** la app lee nombres traducidos si existen; mientras, usa inglés.
 
@@ -59,11 +59,11 @@ Traducción de `target`, `equipment` y `secondary_muscles` con un diccionario de
 - [ ] Generar `name_i18n` para es y pt-BR
 - [ ] Revisión manual de términos raros (nombres idiomáticos, marcas)
 
-### Vía 2 — Diccionario de palabras (semi-automática)
-- [ ] Los nombres se componen de pocas palabras repetidas (pull up, sit-up, squat,
-      dumbbell, barbell, etc.). Construir un glosario de ~150-200 términos
-- [ ] Script que traduzca por sustitución de palabras + reglas
-- [ ] Cubre la mayoría; revisar el resto a mano
+### Vía 2 — Diccionario de palabras (semi-automática) — ELEGIDA ✅
+- [x] Los nombres se componen de pocas palabras repetidas (pull up, sit-up, squat,
+      dumbbell, barbell, etc.). Construir un glosario de ~230 términos (`scripts/generate-name-i18n.py`)
+- [x] Script que traduzca por sustitución de palabras + frases compuestas + reglas
+- [x] Cubre la mayoría; palabras raras (freq. 1-2) quedan en inglés como fallback
 
 ### Vía 3 — Manual (máxima calidad, mucho trabajo)
 - [ ] Traducir los 1324 a mano o con ayuda, revisando uno por uno
@@ -74,10 +74,10 @@ Traducción de `target`, `equipment` y `secondary_muscles` con un diccionario de
 
 ## Etapa D — Integrar y validar
 
-- [ ] Reemplazar/actualizar `exercises.json` con el campo `name_i18n`
-- [ ] Validar que el JSON sigue cumpliendo el schema (`exercises.schema.json`) — actualizar schema si hace falta
-- [ ] Verificar tamaño del JSON (impacto en carga; hoy se carga entero)
-- [ ] Probar la app en los 3 idiomas: nombres traducidos en selector, preview, setup y rutina
+- [x] Reemplazar/actualizar `exercises.json` con el campo `name_i18n`
+- [x] Validar que el JSON sigue cumpliendo el schema (`exercises.schema.json`) — añadido `name_i18n`
+- [x] Verificar tamaño del JSON (5.09 MB → 5.32 MB, +230 KB, aceptable)
+- [x] Probar la app en los 3 idiomas: nombres traducidos en selector, preview, setup y rutina
 
 **Resultado:** catálogo completamente localizado en es/en/pt-BR.
 

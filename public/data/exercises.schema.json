@@ -47,6 +47,10 @@
           "description": "Full exercise name (e.g. \"3/4 sit-up\").",
           "minLength": 1
         },
+        "name_i18n": {
+          "$ref": "#/$defs/languageMap",
+          "description": "Translated exercise name per language. Optional; falls back to `name` (English)."
+        },
         "category": {
           "type": "string",
           "description": "Body part category. Mirrors body_part.",

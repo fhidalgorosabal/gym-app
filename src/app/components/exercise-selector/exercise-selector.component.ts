@@ -101,7 +101,7 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                       class="h-12 w-12 rounded-lg bg-gray-100 object-cover"
                     />
                     <div class="min-w-0 flex-1">
-                      <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name }}</p>
+                      <p class="truncate text-sm font-medium text-gray-800">{{ lang.exerciseName(exercise) }}</p>
                       <p class="text-xs text-gray-500">{{ lang.term(exercise.equipment) }} · {{ lang.term(exercise.target) }}</p>
                     </div>
                     <svg class="h-5 w-5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

@@ -55,6 +55,8 @@ export interface LanguageStepsMap {
 export interface Exercise {
   id: string;
   name: string;
+  /** Nombre traducido por idioma. Opcional: si falta, se usa `name` (inglés). */
+  name_i18n?: LanguageMap;
   category: string;
   body_part: BodyPart;
   equipment: string;

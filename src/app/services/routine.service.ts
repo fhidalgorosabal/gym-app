@@ -38,11 +38,11 @@ export class RoutineService {
     return routine?.exercises ?? [];
   }
 
-  addExercise(dayId: number, exercise: Exercise): RoutineExercise {
+  addExercise(dayId: number, exercise: Exercise, displayName?: string): RoutineExercise {
     const newExercise: RoutineExercise = {
       id: crypto.randomUUID(),
       exercise_id: exercise.id,
-      name: exercise.name,
+      name: displayName ?? exercise.name,
       image: exercise.image,
       reps: DEFAULT_EXERCISE_CONFIG.reps,
       sets: DEFAULT_EXERCISE_CONFIG.sets,

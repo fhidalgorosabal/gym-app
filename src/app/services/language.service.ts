@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { UI_DICT, DAY_NAMES, BODY_PART_LABELS_I18N, UIKey } from '../i18n/ui';
 import { translateTerm } from '../i18n/exercise-terms';
+import { Exercise } from '../models/exercise.model';
 
 export type Lang = 'es' | 'en' | 'pt-BR';
 
@@ -34,6 +35,14 @@ export class LanguageService {
   /** Traduce un término del catálogo (target, equipment, músculo) al idioma actual. */
   term(value: string): string {
     return translateTerm(value, this._lang());
+  }
+
+  /**
+   * Nombre del ejercicio en el idioma actual.
+   * Usa `name_i18n[lang]` si existe; si no, cae al `name` en inglés.
+   */
+  exerciseName(exercise: Pick<Exercise, 'name' | 'name_i18n'>): string {
+    return exercise.name_i18n?.[this._lang()] || exercise.name;
   }
 
   /** Cambia el idioma y lo persiste. */

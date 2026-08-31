@@ -233,7 +233,8 @@ export default class SetupDayPage implements OnInit {
   }
 
   onExerciseSelected(exercise: Exercise) {
-    this.routineService.addExercise(this.dayId(), exercise);
+    // Guarda el nombre en el idioma que el usuario tiene seleccionado ahora.
+    this.routineService.addExercise(this.dayId(), exercise, this.lang.exerciseName(exercise));
     this.selectorOpen.set(false);
   }
 
