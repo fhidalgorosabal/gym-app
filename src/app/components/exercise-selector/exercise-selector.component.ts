@@ -43,7 +43,17 @@ import { ExercisePreviewComponent } from '../exercise-preview/exercise-preview.c
                   (click)="selectBodyPart(part)"
                   class="flex flex-col items-center justify-center rounded-xl border-2 border-gray-200 p-4 transition-all hover:border-red-500 hover:bg-red-50 active:scale-95"
                 >
-                  <span class="text-2xl">{{ getBodyPartIcon(part) }}</span>
+                  @if (getBodyPartImage(part); as img) {
+                    <img
+                      [src]="img"
+                      [alt]="getBodyPartLabel(part)"
+                      loading="lazy"
+                      decoding="async"
+                      class="h-12 w-12 object-contain"
+                    />
+                  } @else {
+                    <span class="flex h-12 w-12 items-center justify-center text-3xl">{{ getBodyPartFallbackIcon(part) }}</span>
+                  }
                   <span class="mt-1 text-sm font-medium text-gray-700">{{ getBodyPartLabel(part) }}</span>
                   <span class="text-xs text-gray-400">{{ getExerciseCount(part) }} ejercicios</span>
                 </button>
@@ -146,20 +156,28 @@ export class ExerciseSelectorComponent implements OnInit {
     return BODY_PART_LABELS[part];
   }
 
-  getBodyPartIcon(part: BodyPart): string {
-    const icons: Record<BodyPart, string> = {
-      back: '🔙',
-      cardio: '❤️',
-      chest: '💪',
-      'lower arms': '🤜',
-      'lower legs': '🦵',
-      neck: '🧣',
-      shoulders: '🏋️',
-      'upper arms': '💪',
-      'upper legs': '🦿',
-      waist: '🎯'
+  /** Ruta de la imagen de cada categoría. `null` si no tiene imagen (se usa emoji de respaldo). */
+  getBodyPartImage(part: BodyPart): string | null {
+    const images: Partial<Record<BodyPart, string>> = {
+      back: 'images/tipos/espalda.png',
+      chest: 'images/tipos/pecho.png',
+      'lower arms': 'images/tipos/antebrazos.png',
+      'lower legs': 'images/tipos/pantorrillas.png',
+      neck: 'images/tipos/cuello.png',
+      shoulders: 'images/tipos/hombros.png',
+      'upper arms': 'images/tipos/brazos.png',
+      'upper legs': 'images/tipos/piernas.png',
+      waist: 'images/tipos/abdomen.png'
     };
-    return icons[part];
+    return images[part] ?? null;
+  }
+
+  /** Emoji de respaldo para categorías sin imagen (p. ej. cardio). */
+  getBodyPartFallbackIcon(part: BodyPart): string {
+    const icons: Partial<Record<BodyPart, string>> = {
+      cardio: '❤️'
+    };
+    return icons[part] ?? '🏋️';
   }
 
   getExerciseCount(part: BodyPart): number {

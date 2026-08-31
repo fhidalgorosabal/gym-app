@@ -84,16 +84,16 @@ export const BODY_PART_LABELS: Record<BodyPart, string> = {
   waist: 'Abdomen'
 };
 
-/** Todas las categorías disponibles */
+/** Todas las categorías disponibles, ordenadas de arriba a abajo del cuerpo (cardio al final) */
 export const BODY_PARTS: BodyPart[] = [
-  'back',
-  'cardio',
-  'chest',
-  'lower arms',
-  'lower legs',
   'neck',
   'shoulders',
+  'chest',
+  'back',
   'upper arms',
+  'lower arms',
+  'waist',
   'upper legs',
-  'waist'
+  'lower legs',
+  'cardio'
 ];
