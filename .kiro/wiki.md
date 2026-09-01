@@ -2,7 +2,7 @@
 
 > Documento de traspaso. Resume qué es la app, qué se ha construido, qué se corrigió,
 > las decisiones de diseño y cómo retomar el trabajo en una nueva sesión.
-> Última actualización: 2026-08-31.
+> Última actualización: 2026-09-01.
 
 ---
 
@@ -68,6 +68,9 @@ models/
 i18n/
   ui.ts                → diccionario de textos de UI + DAY_NAMES + BODY_PART_LABELS_I18N
   exercise-terms.ts    → traducción de target/equipment/músculos (78 términos)
+pipes/
+  capitalize.pipe.ts   → pipe `capitalize`: primera letra en mayúscula, respeta el resto
+                         (nombres de ejercicios). Usado en selector, preview, setup-day y routine.
 ```
 
 Otros: `public/data/exercises.json` (dataset con `name_i18n` ya incrustado, incluidos los
@@ -132,9 +135,24 @@ Cronología de esta línea de trabajo (rama `develop`):
    `public/images/tipos/` (9 imágenes; cardio usa emoji ❤️ de respaldo). Orden corporal
    (cuello → ... → cardio al final).
 5. **Idiomas UI + datos** — servicio, diccionarios, migración de todos los textos, términos y nombres.
+6. **Revisión manual de nombres (2026-09-01)** — los 1324 nombres de ejercicios revisados a
+   mano en es/pt-BR e incrustados en `name_i18n`. Se creó un andamiaje temporal en `scripts/`
+   (generador + overrides + utilidades) que **se eliminó al terminar** para no dejar archivos
+   sin uso. Registro y guía de estilo en `.kiro/plan-nombres-ejercicios.md`.
+7. **Pipe `capitalize` (2026-09-01)** — `src/app/pipes/capitalize.pipe.ts`. Pone en mayúscula
+   la primera letra del nombre al mostrarlo (el inglés viene en minúsculas), respetando
+   mayúsculas internas ("V-up", "Press JM"). Aplicado en selector, preview, setup-day y routine.
+   Con test (`capitalize.pipe.spec.ts`, 5 casos, pasan).
+8. **Agente local `gymapp` (2026-09-01)** — `.kiro/agents/gymapp.json`: auto-aprueba las
+   herramientas del flujo (edición del proyecto y comandos `npm`/`npx cap`/`python3`/`ng`/git de
+   lectura) para no pedir permiso repetido. Activar con `/agent gymapp`.
 
 Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
 `Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
+
+> **Pendiente de commit (sesión 2026-09-01):** revisión manual de nombres + limpieza de
+> `scripts/` + pipe `capitalize` + agente `gymapp`. Mensaje sugerido:
+> `feat: nombres de ejercicios revisados a mano (1324/1324) en es/pt-BR y limpieza de scripts de generación`
 
 ---
 
@@ -155,18 +173,29 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 
 ## 8. Cómo retomar en una nueva sesión
 
-1. Lee este archivo y luego `.kiro/fases.md`, `.kiro/plan-idiomas.md`, `.kiro/plan-traduccion-datos.md`.
+1. Lee este archivo y luego `.kiro/fases.md`, `.kiro/plan-idiomas.md`,
+   `.kiro/plan-traduccion-datos.md` y `.kiro/plan-nombres-ejercicios.md` (registro de la
+   revisión manual de nombres, ya completa).
 2. Verifica que compila: `npm run build`.
 3. Para probar en móvil: `npx cap sync android` y `npx cap run android`.
 4. Rama de trabajo: `develop`.
+5. (Opcional) Activa el agente con `/agent gymapp` para no reconfirmar comandos del flujo.
+
+> **Estado al cerrar 2026-09-01:** nombres 1324/1324 revisados a mano; `scripts/` eliminado;
+> pipe `capitalize` aplicado; build OK. **Cambios sin commitear** (ver mensaje sugerido en §6).
+> Lo primero mañana: revisar/hacer el commit.
 
 ### Próximos pasos sugeridos (pendientes)
+- **Commit pendiente** de la sesión de hoy (nombres + limpieza + pipe + agente).
+- **Arreglo menor de test:** `src/app/app.spec.ts` (autogenerado) falla con
+  `No provider found for ActivatedRoute` — añadir `provideRouter([])` al TestBed. Preexistente,
+  ajeno al pipe (cuyos tests pasan).
 - **Fase 6 — Pulido y UX:** animaciones/transiciones, skeleton loaders, toasts/estados vacíos,
   dark mode, accesibilidad, **PWA** (ya hay `icons/*.webp` y `manifest.webmanifest` traídos de
   PlanixFit; el manifest de referencia tenía un bug: declara `image/png` pero los archivos son
   `.webp` — corregir al integrarlo).
 - **Idiomas — pulido opcional (Etapa 3 de `plan-idiomas.md`):** `LOCALE_ID` dinámico para
-  fechas/números; revisar calidad de nombres traducidos frecuentes en el glosario.
+  fechas/números.
 - **Fase 7 — Features avanzados:** historial de entrenamientos, estadísticas, sync con backend, etc.
 
 ### Cosas que NO hay que rehacer
