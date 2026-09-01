@@ -36,8 +36,6 @@ npm run build                                  # compilar Angular
 npx cap sync android                           # copiar build + plugins a Android
 npx cap open android                           # abrir Android Studio
 npx cap run android                            # compilar y correr en dispositivo
-python3 scripts/generate-name-i18n.py          # regenerar traducción de nombres
-python3 scripts/generate-name-i18n.py --report # ver palabras sin traducir
 ```
 
 ---
@@ -72,8 +70,8 @@ i18n/
   exercise-terms.ts    → traducción de target/equipment/músculos (78 términos)
 ```
 
-Otros: `scripts/generate-name-i18n.py` (glosario + generador de `name_i18n`),
-`public/data/exercises.json` (dataset con `name_i18n`), `public/images/tipos/` (íconos de categorías),
+Otros: `public/data/exercises.json` (dataset con `name_i18n` ya incrustado, incluidos los
+nombres revisados a mano), `public/images/tipos/` (íconos de categorías),
 `assets/` e `icons/` (fuentes para íconos/splash, tomadas de PlanixFit).
 
 ---
@@ -91,6 +89,11 @@ Otros: `scripts/generate-name-i18n.py` (glosario + generador de `name_i18n`),
 | 7 — Features avanzados | ⬜ pendiente (futuro) |
 
 **Extra ya hecho (fuera del plan original):** sistema de idiomas completo (UI + datos).
+**Nombres de ejercicios revisados a mano: 1324/1324** (es/pt-BR), ya incrustados en
+`public/data/exercises.json` (`name_i18n`). El andamiaje de generación (`scripts/`: generador,
+overrides, utilidades) se eliminó tras completar la revisión — ver
+`.kiro/plan-nombres-ejercicios.md` para el histórico y la guía de estilo. Para reeditar un
+nombre puntual hoy: editar directamente `name_i18n` del ejercicio en el JSON.
 
 ---
 
@@ -106,11 +109,11 @@ Ver planes: `.kiro/plan-idiomas.md` y `.kiro/plan-traduccion-datos.md`.
 - **Datos traducidos:**
   - `instructions` / `instruction_steps` → ya venían en el JSON.
   - `target`, `equipment`, `secondary_muscles` → diccionario `exercise-terms.ts` (`term()`).
-  - `name` de ejercicios → campo `name_i18n` generado por `scripts/generate-name-i18n.py`
-    (glosario de ~230 términos, Vía 2). Helper `exerciseName()`.
+  - `name` de ejercicios → campo `name_i18n` (es/en/pt-BR) **revisado a mano (1324/1324)** e
+    incrustado en el JSON. Helper `exerciseName()`. (El andamiaje de generación en `scripts/`
+    se eliminó tras la revisión.)
 
-**Cobertura:** UI 100%, términos 100% (78/78), nombres: mayoría traducida; palabras raras
-(freq. 1-2) quedan en inglés como fallback.
+**Cobertura:** UI 100%, términos 100% (78/78), **nombres 100% (1324/1324) revisados a mano**.
 
 ---
 

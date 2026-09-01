@@ -18,7 +18,8 @@ hecho, decisiones, próximos pasos, cómo compilar). No la reproduzcas aquí; co
 - Selector de idioma: dropdown propio, NO `<select>` nativo.
 - StatusBar no-overlay: NO reañadir `padding-top` de safe-area en el body.
 - Nombre de ejercicio en rutinas: se guarda en el idioma del momento (no resolver por id al mostrar).
-- Nombres de ejercicios: traducidos por glosario en `scripts/generate-name-i18n.py` (Vía 2).
+- Nombres de ejercicios: revisados a mano (1324/1324) e incrustados en `name_i18n` del JSON.
+  El andamiaje de generación en `scripts/` ya se eliminó; para reeditar, editar el JSON directamente.
 
 ## Planes y estado (detalle en `.kiro/`)
 - `wiki.md` — estado global y traspaso.

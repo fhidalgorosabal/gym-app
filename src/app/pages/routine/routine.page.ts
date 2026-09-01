@@ -4,6 +4,7 @@ import { RoutineService } from '../../services/routine.service';
 import { SoundService } from '../../services/sound.service';
 import { LanguageService } from '../../services/language.service';
 import { RoutineExercise } from '../../models/routine.model';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 type RoutineState = 'ready' | 'exercising' | 'resting-set' | 'resting-exercise' | 'completed';
 
@@ -16,6 +17,7 @@ interface ExerciseProgress {
 
 @Component({
   selector: 'app-routine',
+  imports: [CapitalizePipe],
   template: `
     <div class="p-4">
       @switch (routineState()) {
@@ -130,7 +132,7 @@ interface ExerciseProgress {
                     class="h-10 w-10 rounded-lg bg-gray-100 object-cover"
                   />
                   <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name }}</p>
+                    <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name | capitalize }}</p>
                     <p class="text-xs text-gray-500">
                       {{ getProgress(exercise.id).currentSet }}/{{ exercise.sets }} {{ lang.t('routine.series') }} · {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('unit.repetitionsShort') : lang.t('unit.minutesShort') }}
                     </p>

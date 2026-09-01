@@ -1,0 +1,27 @@
+{
+  "name": "gymapp",
+  "description": "Agente de GymApp: auto-aprueba las herramientas del flujo de trabajo (edición de archivos del proyecto y comandos de build/scripts) para no pedir permiso una vez dada la orden.",
+  "prompt": "Eres el agente de desarrollo de GymApp (Angular 22 + Tailwind v4 + Capacitor, offline-first). Responde en español. Antes de trabajar, lee .kiro/wiki.md. Sigue las reglas de .kiro/steering/project.md.",
+  "tools": ["read", "write", "shell", "grep", "glob", "code"],
+  "allowedTools": ["read", "grep", "glob", "code", "write"],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": ["./**"],
+      "deniedPaths": ["./.env", "./.env.*", "./**/*.key", "./**/secrets/**"]
+    },
+    "shell": {
+      "allowedCommands": [
+        "python3 .*",
+        "npm run .*",
+        "npm test.*",
+        "npx cap .*",
+        "ng .*",
+        "git status",
+        "git diff.*",
+        "git add .*",
+        "git log.*"
+      ],
+      "autoAllowReadonly": true
+    }
+  }
+}

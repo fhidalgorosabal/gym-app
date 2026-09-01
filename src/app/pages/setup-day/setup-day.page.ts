@@ -7,10 +7,11 @@ import { LanguageService } from '../../services/language.service';
 import { ExerciseSelectorComponent } from '../../components/exercise-selector/exercise-selector.component';
 import { RoutineExercise, Unit } from '../../models/routine.model';
 import { Exercise } from '../../models/exercise.model';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-setup-day',
-  imports: [FormsModule, ExerciseSelectorComponent],
+  imports: [FormsModule, ExerciseSelectorComponent, CapitalizePipe],
   template: `
     <div class="p-4">
       <!-- Header -->
@@ -68,7 +69,7 @@ import { Exercise } from '../../models/exercise.model';
                   class="h-10 w-10 rounded-lg bg-gray-100 object-cover"
                 />
                 <div class="min-w-0 flex-1">
-                  <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name }}</p>
+                  <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name | capitalize }}</p>
                   <p class="text-xs text-gray-500">
                     {{ exercise.sets }}x{{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('unit.repetitionsShort') : lang.t('unit.minutesShort') }}
                   </p>

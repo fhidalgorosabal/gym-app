@@ -59,11 +59,16 @@ Traducción de `target`, `equipment` y `secondary_muscles` con un diccionario de
 - [ ] Generar `name_i18n` para es y pt-BR
 - [ ] Revisión manual de términos raros (nombres idiomáticos, marcas)
 
-### Vía 2 — Diccionario de palabras (semi-automática) — ELEGIDA ✅
+### Vía 2 — Diccionario de palabras (semi-automática) — usada como primer pase
 - [x] Los nombres se componen de pocas palabras repetidas (pull up, sit-up, squat,
-      dumbbell, barbell, etc.). Construir un glosario de ~230 términos (`scripts/generate-name-i18n.py`)
-- [x] Script que traduzca por sustitución de palabras + frases compuestas + reglas
-- [x] Cubre la mayoría; palabras raras (freq. 1-2) quedan en inglés como fallback
+      dumbbell, barbell, etc.). Se construyó un glosario de ~230 términos con un generador.
+- [x] Script que traducía por sustitución de palabras + frases compuestas + reglas
+- [x] Cubría la mayoría; palabras raras (freq. 1-2) quedaban en inglés como fallback
+
+> **Superada:** la Vía 2 dejaba nombres de calidad media (orden en inglés, sin concordancia).
+> Se hizo después una **revisión manual completa (1324/1324)** — ver
+> `.kiro/plan-nombres-ejercicios.md` (Etapa E). El andamiaje de scripts se eliminó al terminar;
+> el resultado quedó incrustado en `name_i18n` del JSON.
 
 ### Vía 3 — Manual (máxima calidad, mucho trabajo)
 - [ ] Traducir los 1324 a mano o con ayuda, revisando uno por uno

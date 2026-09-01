@@ -1,9 +1,11 @@
 import { Component, inject, input, output } from '@angular/core';
 import { Exercise } from '../../models/exercise.model';
 import { LanguageService } from '../../services/language.service';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-exercise-preview',
+  imports: [CapitalizePipe],
   template: `
     @if (exercise(); as ex) {
       <!-- Backdrop -->
@@ -13,7 +15,7 @@ import { LanguageService } from '../../services/language.service';
       <div class="fixed inset-x-4 top-[5%] z-60 mx-auto max-h-[90vh] max-w-md overflow-y-auto rounded-2xl bg-white shadow-2xl">
         <!-- Header -->
         <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-4 py-3">
-          <h3 class="text-base font-bold text-gray-800">{{ langSvc.exerciseName(ex) }}</h3>
+          <h3 class="text-base font-bold text-gray-800">{{ langSvc.exerciseName(ex) | capitalize }}</h3>
           <button
             (click)="closed.emit()"
             aria-label="Cerrar preview"
