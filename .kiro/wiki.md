@@ -2,7 +2,7 @@
 
 > Documento de traspaso. Resume qué es la app, qué se ha construido, qué se corrigió,
 > las decisiones de diseño y cómo retomar el trabajo en una nueva sesión.
-> Última actualización: 2026-09-01.
+> Última actualización: 2026-09-02.
 
 ---
 
@@ -50,8 +50,12 @@ components/
   header/              → barra superior roja + botón menú + selector de idioma
   menu/                → menú lateral (días activos + navegación)
   language-selector/   → dropdown propio con banderas 🇪🇸🇬🇧🇧🇷
-  exercise-selector/   → selector de ejercicio (categorías con imágenes + lista + búsqueda)
-  exercise-preview/    → modal con GIF, instrucciones y metadata
+  exercise-selector/   → selector de ejercicio en 3 pasos dentro de un mismo panel slide-up:
+                         categorías (imágenes) → lista + búsqueda → detalle embebido.
+                         Header con flecha ‹ que retrocede un nivel (detalle→lista→categorías).
+  exercise-preview/    → componente de contenido (GIF, metadata, instrucciones, botón
+                         "Seleccionar"); SIN modal/backdrop propio, se embebe en el paso 3
+                         del selector.
 pages/
   home/                → pantalla inicial (rutina de hoy)
   setup/               → activar/desactivar días
@@ -146,13 +150,23 @@ Cronología de esta línea de trabajo (rama `develop`):
 8. **Agente local `gymapp` (2026-09-01)** — `.kiro/agents/gymapp.json`: auto-aprueba las
    herramientas del flujo (edición del proyecto y comandos `npm`/`npx cap`/`python3`/`ng`/git de
    lectura) para no pedir permiso repetido. Activar con `/agent gymapp`.
+9. **Preview embebida en el selector (2026-09-02)** — antes el detalle del ejercicio salía como
+   un **segundo modal** flotante encima del panel slide-up (se veía mal en móvil). Ahora la
+   preview es un componente de solo contenido (sin backdrop/modal propio) que se muestra como
+   **tercer paso dentro del mismo panel** (categorías → lista → detalle). El header del panel
+   muestra el nombre del ejercicio en el detalle y una flecha ‹ retrocede un nivel
+   (detalle→lista→categorías). Build OK, sin warnings.
 
 Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
 `Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
 
-> **Pendiente de commit (sesión 2026-09-01):** revisión manual de nombres + limpieza de
-> `scripts/` + pipe `capitalize` + agente `gymapp`. Mensaje sugerido:
-> `feat: nombres de ejercicios revisados a mano (1324/1324) en es/pt-BR y limpieza de scripts de generación`
+> **Commiteado y subido (2026-09-02):** revisión manual de nombres + limpieza de `scripts/` +
+> pipe `capitalize` + agente `gymapp`. En `origin/develop` (commits `fix: Mejora en nombres de
+> ejercicios y traducciones` y `feat: Actualizacion de la wiki`). Working tree limpio.
+>
+> **Pendiente de commit (2026-09-02):** preview embebida como paso 3 del selector (ver punto 9).
+> Archivos: `exercise-selector.component.ts`, `exercise-preview.component.ts`. Mensaje sugerido:
+> `feat: preview de ejercicio embebida como paso 3 del selector (sin doble modal)`
 
 ---
 
@@ -181,12 +195,13 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 4. Rama de trabajo: `develop`.
 5. (Opcional) Activa el agente con `/agent gymapp` para no reconfirmar comandos del flujo.
 
-> **Estado al cerrar 2026-09-01:** nombres 1324/1324 revisados a mano; `scripts/` eliminado;
-> pipe `capitalize` aplicado; build OK. **Cambios sin commitear** (ver mensaje sugerido en §6).
-> Lo primero mañana: revisar/hacer el commit.
+> **Estado al 2026-09-02:** nombres 1324/1324 revisados a mano; `scripts/` eliminado;
+> pipe `capitalize` aplicado; preview del ejercicio ahora embebida como paso 3 del selector
+> (sin doble modal); build OK. Trabajo previo commiteado y subido; **el cambio de la preview
+> queda sin commitear.** Próximo paso: commitear la preview, luego Fase 6 (pulido/UX).
 
 ### Próximos pasos sugeridos (pendientes)
-- **Commit pendiente** de la sesión de hoy (nombres + limpieza + pipe + agente).
+- ~~Commit pendiente de la sesión de hoy~~ ✅ hecho y subido a `origin/develop` (2026-09-02).
 - **Arreglo menor de test:** `src/app/app.spec.ts` (autogenerado) falla con
   `No provider found for ActivatedRoute` — añadir `provideRouter([])` al TestBed. Preexistente,
   ajeno al pipe (cuyos tests pasan).

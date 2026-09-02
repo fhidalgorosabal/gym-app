@@ -16,9 +16,22 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
       <!-- Panel slide-up -->
       <div class="fixed inset-x-0 bottom-0 z-50 flex max-h-[90vh] flex-col rounded-t-2xl bg-white shadow-xl">
         <!-- Header -->
-        <div class="flex items-center justify-between border-b px-4 py-3">
-          <h2 class="text-lg font-bold text-gray-800">
-            @if (selectedBodyPart()) {
+        <div class="flex items-center gap-2 border-b px-4 py-3">
+          @if (selectedBodyPart() || previewExercise()) {
+            <button
+              (click)="headerBack()"
+              class="-ml-1 rounded-lg p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+              [attr.aria-label]="lang.t('back')"
+            >
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          }
+          <h2 class="min-w-0 flex-1 truncate text-lg font-bold text-gray-800">
+            @if (previewExercise(); as ex) {
+              {{ lang.exerciseName(ex) | capitalize }}
+            } @else if (selectedBodyPart()) {
               {{ getBodyPartLabel(selectedBodyPart()!) }}
             } @else {
               {{ lang.t('selector.title') }}
@@ -37,7 +50,14 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
         <!-- Contenido -->
         <div class="flex-1 overflow-y-auto">
-          @if (!selectedBodyPart()) {
+          @if (previewExercise(); as ex) {
+            <!-- Paso 3: Detalle del ejercicio (embebido en el mismo panel) -->
+            <app-exercise-preview
+              [exercise]="ex"
+              (confirmed)="confirmExercise($event)"
+              (closed)="closePreview()"
+            />
+          } @else if (!selectedBodyPart()) {
             <!-- Paso 1: Elegir body_part -->
             <div class="grid grid-cols-2 gap-3 p-4">
               @for (part of bodyParts; track part) {
@@ -64,17 +84,8 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
           } @else {
             <!-- Paso 2: Listado de ejercicios de esa categoría -->
             <div class="sticky top-0 z-10 bg-white px-4 py-2 shadow-sm">
-              <!-- Botón volver + búsqueda -->
+              <!-- Búsqueda -->
               <div class="flex items-center gap-2">
-                <button
-                  (click)="goBack()"
-                  class="rounded-lg p-2 text-gray-500 hover:bg-gray-100"
-                  [attr.aria-label]="lang.t('back')"
-                >
-                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
                 <input
                   type="text"
                   [placeholder]="lang.t('selector.search')"
@@ -119,13 +130,6 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
           }
         </div>
       </div>
-
-      <!-- Preview modal -->
-      <app-exercise-preview
-        [exercise]="previewExercise()"
-        (confirmed)="confirmExercise($event)"
-        (closed)="closePreview()"
-      />
     }
   `
 })
@@ -195,6 +199,15 @@ export class ExerciseSelectorComponent implements OnInit {
   goBack() {
     this.selectedBodyPart.set(null);
     this.searchTerm.set('');
+  }
+
+  /** Retrocede un paso: detalle → lista → categorías. */
+  headerBack() {
+    if (this.previewExercise()) {
+      this.previewExercise.set(null);
+      return;
+    }
+    this.goBack();
   }
 
   onSearch(event: Event) {

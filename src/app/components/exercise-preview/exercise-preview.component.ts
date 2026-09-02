@@ -1,32 +1,14 @@
 import { Component, inject, input, output } from '@angular/core';
 import { Exercise } from '../../models/exercise.model';
 import { LanguageService } from '../../services/language.service';
-import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-exercise-preview',
-  imports: [CapitalizePipe],
+  imports: [],
   template: `
     @if (exercise(); as ex) {
-      <!-- Backdrop -->
-      <div class="fixed inset-0 z-60 bg-black/60" (click)="closed.emit()"></div>
-
-      <!-- Modal centrado -->
-      <div class="fixed inset-x-4 top-[5%] z-60 mx-auto max-h-[90vh] max-w-md overflow-y-auto rounded-2xl bg-white shadow-2xl">
-        <!-- Header -->
-        <div class="sticky top-0 z-10 flex items-center justify-between border-b bg-white px-4 py-3">
-          <h3 class="text-base font-bold text-gray-800">{{ langSvc.exerciseName(ex) | capitalize }}</h3>
-          <button
-            (click)="closed.emit()"
-            aria-label="Cerrar preview"
-            class="rounded-full p-1 text-gray-500 hover:bg-gray-100"
-          >
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
+      <!-- Contenido embebido dentro del panel del selector (sin backdrop ni modal propio) -->
+      <div>
         <!-- GIF animado -->
         <div class="flex justify-center bg-gray-50 p-4">
           <div class="relative h-44 w-44">
