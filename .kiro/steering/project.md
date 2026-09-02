@@ -12,6 +12,10 @@ hecho, decisiones, próximos pasos, cómo compilar). No la reproduzcas aquí; co
 - Color de marca: **rojo `#dc2626`** (red-600). No usar indigo.
 - Responder en **español**.
 - Tras cambios de código: `npm run build` y, si aplica a móvil, `npx cap sync android`.
+- **Git: NO commitear ni hacer push.** El usuario siempre hace los commits él mismo. Dejar los
+  cambios listos en el working tree y avisar; no ejecutar `git commit`/`git push`. **Sí sugerir
+  el texto del commit** (estilo Conventional Commits, en español), p. ej.:
+  `fix: Cambios de cualquier cosa` · `feat: Nuevo componente de tal cosa`.
 - Idiomas soportados: es / en / pt-BR (ver `LanguageService`, `i18n/`).
 
 ## No rehacer (decisiones tomadas)

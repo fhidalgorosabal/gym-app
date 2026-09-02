@@ -156,6 +156,9 @@ Cronología de esta línea de trabajo (rama `develop`):
    **tercer paso dentro del mismo panel** (categorías → lista → detalle). El header del panel
    muestra el nombre del ejercicio en el detalle y una flecha ‹ retrocede un nivel
    (detalle→lista→categorías). Build OK, sin warnings.
+10. **Icono de días en el menú (2026-09-02)** — el icono de los días activos en el menú lateral
+    pasó de un rayo a un **calendario** (Heroicons outline, SVG inline en `menu.component.ts`).
+    Sigue heredando el color del texto (rojo cuando el día está activo).
 
 Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
 `Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
@@ -164,9 +167,12 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 > pipe `capitalize` + agente `gymapp`. En `origin/develop` (commits `fix: Mejora en nombres de
 > ejercicios y traducciones` y `feat: Actualizacion de la wiki`). Working tree limpio.
 >
-> **Pendiente de commit (2026-09-02):** preview embebida como paso 3 del selector (ver punto 9).
-> Archivos: `exercise-selector.component.ts`, `exercise-preview.component.ts`. Mensaje sugerido:
-> `feat: preview de ejercicio embebida como paso 3 del selector (sin doble modal)`
+> **Pendiente de commit (2026-09-02):** preview embebida como paso 3 del selector (ver punto 9)
+> + icono de calendario para los días en el menú (ver punto 10). Archivos:
+> `exercise-selector.component.ts`, `exercise-preview.component.ts`, `menu.component.ts`.
+> Mensajes sugeridos:
+> `feat: preview de ejercicio embebida como paso 3 del selector (sin doble modal)` ·
+> `feat: icono de calendario para los días en el menú`
 
 ---
 
