@@ -1,6 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Exercise, BodyPart } from '../models/exercise.model';
+import { Lang } from './language.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExerciseService {
@@ -51,15 +52,23 @@ export class ExerciseService {
     return this.exercises().filter(e => e.body_part === bodyPart);
   }
 
-  /** Busca por nombre (case-insensitive), opcionalmente dentro de un body_part */
-  search(term: string, bodyPart?: BodyPart): Exercise[] {
+  /**
+   * Busca por nombre (case-insensitive), opcionalmente dentro de un body_part.
+   * Si se pasa `lang`, también busca en el nombre traducido (`name_i18n[lang]`),
+   * además del nombre base en inglés (`name`).
+   */
+  search(term: string, bodyPart?: BodyPart, lang?: Lang): Exercise[] {
     const normalized = term.toLowerCase().trim();
     if (!normalized) {
       return bodyPart ? this.getByBodyPart(bodyPart) : this.exercises();
     }
 
     let source = bodyPart ? this.getByBodyPart(bodyPart) : this.exercises();
-    return source.filter(e => e.name.toLowerCase().includes(normalized));
+    return source.filter(e => {
+      if (e.name.toLowerCase().includes(normalized)) return true;
+      const translated = lang ? e.name_i18n?.[lang] : undefined;
+      return !!translated && translated.toLowerCase().includes(normalized);
+    });
   }
 
   /** Filtra por body_part y opcionalmente por equipment */

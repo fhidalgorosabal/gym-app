@@ -159,20 +159,28 @@ Cronología de esta línea de trabajo (rama `develop`):
 10. **Icono de días en el menú (2026-09-02)** — el icono de los días activos en el menú lateral
     pasó de un rayo a un **calendario** (Heroicons outline, SVG inline en `menu.component.ts`).
     Sigue heredando el color del texto (rojo cuando el día está activo).
+11. **Búsqueda por nombre traducido (2026-09-02)** — el buscador del selector antes solo
+    comparaba contra `e.name` (nombre base en inglés), así que buscar "sentadilla" con la app en
+    español no devolvía nada. Ahora `ExerciseService.search()` acepta un tercer parámetro `lang`
+    y, además del nombre en inglés, busca en el nombre traducido del idioma activo
+    (`name_i18n[lang]`). El selector le pasa `this.lang.lang()` en `filteredExercises()`, por lo
+    que la búsqueda es reactiva al idioma. Archivos: `services/exercise.service.ts` (firma de
+    `search` + import de `Lang`) y `exercise-selector.component.ts` (llamada con el idioma).
 
 Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
 `Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
 
 > **Commiteado y subido (2026-09-02):** revisión manual de nombres + limpieza de `scripts/` +
-> pipe `capitalize` + agente `gymapp`. En `origin/develop` (commits `fix: Mejora en nombres de
-> ejercicios y traducciones` y `feat: Actualizacion de la wiki`). Working tree limpio.
+> pipe `capitalize` + agente `gymapp` + preview embebida como paso 3 del selector (punto 9) +
+> icono de calendario para los días en el menú (punto 10). En `origin/develop` (últimos commits
+> `fix: Mejoras en el componente de seleccionar ejercicios` y
+> `feat: Icono calendario para los dias en el menu`).
 >
-> **Pendiente de commit (2026-09-02):** preview embebida como paso 3 del selector (ver punto 9)
-> + icono de calendario para los días en el menú (ver punto 10). Archivos:
-> `exercise-selector.component.ts`, `exercise-preview.component.ts`, `menu.component.ts`.
-> Mensajes sugeridos:
-> `feat: preview de ejercicio embebida como paso 3 del selector (sin doble modal)` ·
-> `feat: icono de calendario para los días en el menú`
+> **Pendiente de commit (2026-09-02):** búsqueda por nombre traducido en el selector (ver punto
+> 11). Este cambio se recuperó del working tree en una sesión que se cerró antes de commitear.
+> Archivos: `services/exercise.service.ts`, `exercise-selector.component.ts`.
+> Mensaje sugerido:
+> `feat: el buscador de ejercicios también busca por el nombre traducido del idioma activo`
 
 ---
 
@@ -202,12 +210,15 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 5. (Opcional) Activa el agente con `/agent gymapp` para no reconfirmar comandos del flujo.
 
 > **Estado al 2026-09-02:** nombres 1324/1324 revisados a mano; `scripts/` eliminado;
-> pipe `capitalize` aplicado; preview del ejercicio ahora embebida como paso 3 del selector
-> (sin doble modal); build OK. Trabajo previo commiteado y subido; **el cambio de la preview
-> queda sin commitear.** Próximo paso: commitear la preview, luego Fase 6 (pulido/UX).
+> pipe `capitalize` aplicado; preview del ejercicio embebida como paso 3 del selector (sin doble
+> modal) e icono de calendario en el menú, ambos ya commiteados y subidos. **Pendiente de
+> commit:** búsqueda por nombre traducido en el selector (recuperada del working tree tras una
+> sesión que se cerró antes de commitear). Próximo paso: commitear ese cambio, luego Fase 6
+> (pulido/UX).
 
 ### Próximos pasos sugeridos (pendientes)
-- ~~Commit pendiente de la sesión de hoy~~ ✅ hecho y subido a `origin/develop` (2026-09-02).
+- **Commit pendiente:** búsqueda por nombre traducido en el selector (punto 11). Verificar con
+  `npm run build` antes de commitear.
 - **Arreglo menor de test:** `src/app/app.spec.ts` (autogenerado) falla con
   `No provider found for ActivatedRoute` — añadir `provideRouter([])` al TestBed. Preexistente,
   ajeno al pipe (cuyos tests pasan).

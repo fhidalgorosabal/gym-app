@@ -148,7 +148,7 @@ export class ExerciseSelectorComponent implements OnInit {
   filteredExercises = computed(() => {
     const part = this.selectedBodyPart();
     if (!part) return [];
-    return this.exerciseService.search(this.searchTerm(), part);
+    return this.exerciseService.search(this.searchTerm(), part, this.lang.lang());
   });
 
   constructor(private exerciseService: ExerciseService) {}
