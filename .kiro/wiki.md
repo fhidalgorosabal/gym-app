@@ -2,7 +2,7 @@
 
 > Documento de traspaso. Resume qué es la app, qué se ha construido, qué se corrigió,
 > las decisiones de diseño y cómo retomar el trabajo en una nueva sesión.
-> Última actualización: 2026-09-02.
+> Última actualización: 2026-09-03.
 
 ---
 
@@ -166,6 +166,20 @@ Cronología de esta línea de trabajo (rama `develop`):
     (`name_i18n[lang]`). El selector le pasa `this.lang.lang()` en `filteredExercises()`, por lo
     que la búsqueda es reactiva al idioma. Archivos: `services/exercise.service.ts` (firma de
     `search` + import de `Lang`) y `exercise-selector.component.ts` (llamada con el idioma).
+12. **Safe-area inferior en overlays (2026-09-03)** — la barra de navegación/gestos del sistema
+    (Android) solapaba el contenido de elementos `fixed`/`sticky` pegados al borde inferior,
+    porque esos elementos se posicionan contra el viewport y no contra el `padding-bottom` de
+    safe-area del `body`. Se añadieron utilidades globales en `src/styles.css` que consumen
+    `--safe-area-bottom`: `.pb-safe` (solo el inset), `.pb-safe-3` (`0.75rem + inset`, para
+    padding propio) y `.mb-safe` (margen aditivo, no pisa el padding existente). Aplicadas en:
+    - `exercise-selector.component.ts`: `mb-safe` en el grid de categorías (paso 1) y en la
+      lista de ejercicios (paso 2), para que los últimos ítems no queden bajo la barra.
+    - `exercise-preview.component.ts`: `pb-safe-3` en la barra sticky del botón "Seleccionar
+      este ejercicio".
+    - `menu.component.ts`: el `nav` pasó a `flex flex-col`; el `<ul>` a
+      `flex-1 overflow-y-auto pb-safe-3`, para que la lista scrollee dentro del menú y el último
+      ítem respete la barra del sistema.
+    Build OK y `npx cap sync android` OK.
 
 Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
 `Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
@@ -176,11 +190,15 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 > `fix: Mejoras en el componente de seleccionar ejercicios` y
 > `feat: Icono calendario para los dias en el menu`).
 >
-> **Pendiente de commit (2026-09-02):** búsqueda por nombre traducido en el selector (ver punto
-> 11). Este cambio se recuperó del working tree en una sesión que se cerró antes de commitear.
-> Archivos: `services/exercise.service.ts`, `exercise-selector.component.ts`.
+> **Commiteado y subido (2026-09-03):** búsqueda por nombre traducido en el selector (punto 11),
+> ya en `origin/develop` como `fix: Ajuste en buscador`. Ya no queda nada de sesiones previas
+> pendiente de commit.
+>
+> **Pendiente de commit (2026-09-03):** safe-area inferior en overlays (selector, preview y menú;
+> ver punto 12). Archivos: `src/styles.css`, `exercise-selector.component.ts`,
+> `exercise-preview.component.ts`, `menu.component.ts`.
 > Mensaje sugerido:
-> `feat: el buscador de ejercicios también busca por el nombre traducido del idioma activo`
+> `fix: respetar safe-area inferior en el selector de ejercicios y el menú lateral`
 
 ---
 
@@ -193,8 +211,9 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 - **Nombre guardado en la rutina = idioma del momento.** Al agregar un ejercicio se guarda el
   `name` en el idioma que el usuario tenga seleccionado; la rutina guardada NO cambia de idioma
   después. `exerciseName()` solo se usa en selector/preview (catálogo reactivo).
-- **Nombres de ejercicios traducidos por glosario (Vía 2)**, no por API ni a mano. Editable
-  re-corriendo el script.
+- **Nombres de ejercicios revisados a mano (1324/1324)** e incrustados en `name_i18n` del JSON.
+  El andamiaje de generación en `scripts/` se eliminó; para reeditar un nombre, editar
+  directamente el JSON.
 - **Bandera de inglés = 🇬🇧** (Reino Unido) por compatibilidad de emoji en Android.
 
 ---
@@ -209,16 +228,17 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 4. Rama de trabajo: `develop`.
 5. (Opcional) Activa el agente con `/agent gymapp` para no reconfirmar comandos del flujo.
 
-> **Estado al 2026-09-02:** nombres 1324/1324 revisados a mano; `scripts/` eliminado;
-> pipe `capitalize` aplicado; preview del ejercicio embebida como paso 3 del selector (sin doble
-> modal) e icono de calendario en el menú, ambos ya commiteados y subidos. **Pendiente de
-> commit:** búsqueda por nombre traducido en el selector (recuperada del working tree tras una
-> sesión que se cerró antes de commitear). Próximo paso: commitear ese cambio, luego Fase 6
-> (pulido/UX).
+> **Estado al 2026-09-03:** fases 1–5 + sistema de idiomas completos. Nombres 1324/1324
+> revisados a mano; `scripts/` eliminado; pipe `capitalize`; preview embebida como paso 3 del
+> selector; icono de calendario en el menú; búsqueda por nombre traducido — todo commiteado y
+> subido a `origin/develop`. En esta sesión se arregló el solapamiento de la barra de
+> navegación/gestos del sistema con los overlays (selector, preview y menú) vía utilidades de
+> safe-area inferior (punto 12), **pendiente de commit**. Próximo paso: commitear ese arreglo,
+> luego Fase 6 (pulido/UX).
 
 ### Próximos pasos sugeridos (pendientes)
-- **Commit pendiente:** búsqueda por nombre traducido en el selector (punto 11). Verificar con
-  `npm run build` antes de commitear.
+- **Commit pendiente:** safe-area inferior en overlays (punto 12). Ya verificado con
+  `npm run build` y `npx cap sync android`.
 - **Arreglo menor de test:** `src/app/app.spec.ts` (autogenerado) falla con
   `No provider found for ActivatedRoute` — añadir `provideRouter([])` al TestBed. Preexistente,
   ajeno al pipe (cuyos tests pasan).
@@ -232,7 +252,9 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 
 ### Cosas que NO hay que rehacer
 - No volver a `<select>` nativo para el idioma.
-- No re-aplicar `padding-top` de safe-area en el body (rompe con StatusBar no-overlay).
+- No re-aplicar `padding-top` de safe-area en el body (rompe con StatusBar no-overlay). El
+  inset **inferior** sí se aplica, pero directamente en los elementos `fixed`/`sticky` que se
+  pegan al borde inferior (ver punto 12), no en el body.
 - No resolver el nombre del ejercicio por `exercise_id` al mostrar en rutinas (decisión tomada:
   se guarda en el idioma del momento).
 

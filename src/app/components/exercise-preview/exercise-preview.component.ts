@@ -56,7 +56,7 @@ import { LanguageService } from '../../services/language.service';
         </div>
 
         <!-- Botón confirmar -->
-        <div class="sticky bottom-0 border-t bg-white px-4 py-3">
+        <div class="sticky bottom-0 border-t bg-white px-4 py-3 pb-safe-3">
           <button
             (click)="confirmed.emit(ex)"
             class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"

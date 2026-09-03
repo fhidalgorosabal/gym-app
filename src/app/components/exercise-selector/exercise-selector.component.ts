@@ -59,7 +59,7 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
             />
           } @else if (!selectedBodyPart()) {
             <!-- Paso 1: Elegir body_part -->
-            <div class="grid grid-cols-2 gap-3 p-4">
+            <div class="grid grid-cols-2 gap-3 p-4 mb-safe">
               @for (part of bodyParts; track part) {
                 <button
                   (click)="selectBodyPart(part)"
@@ -98,7 +98,7 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
             </div>
 
             <!-- Lista de ejercicios -->
-            <ul class="divide-y divide-gray-100 px-4">
+            <ul class="divide-y divide-gray-100 px-4 mb-safe">
               @for (exercise of filteredExercises(); track exercise.id) {
                 <li>
                   <button

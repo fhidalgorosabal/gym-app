@@ -17,7 +17,7 @@ import { LanguageService } from '../../services/language.service';
 
     <!-- Panel -->
     <nav
-      class="fixed inset-y-0 left-0 z-50 w-64 transform bg-white shadow-xl transition-transform duration-300 ease-in-out"
+      class="fixed inset-y-0 left-0 z-50 flex w-64 transform flex-col bg-white shadow-xl transition-transform duration-300 ease-in-out"
       [class.translate-x-0]="open()"
       [class.-translate-x-full]="!open()"
     >
@@ -34,7 +34,7 @@ import { LanguageService } from '../../services/language.service';
         </button>
       </div>
 
-      <ul class="mt-2 space-y-1 px-2">
+      <ul class="mt-2 flex-1 space-y-1 overflow-y-auto px-2 pb-safe-3">
         <!-- Inicio -->
         <li>
           <a

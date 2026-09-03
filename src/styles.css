@@ -38,6 +38,21 @@ button, a {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Respeta la barra de navegación/gestos del sistema en elementos fixed/sticky
+   (paneles slide-up, botones pegados al borde inferior). Los elementos con
+   position: fixed/sticky se posicionan contra el viewport, no contra el padding
+   del body, por eso necesitan el inset explícito. */
+.pb-safe {
+  padding-bottom: var(--safe-area-bottom);
+}
+.pb-safe-3 {
+  padding-bottom: calc(0.75rem + var(--safe-area-bottom));
+}
+/* Margen inferior aditivo con el inset (no pisa el padding propio del elemento). */
+.mb-safe {
+  margin-bottom: var(--safe-area-bottom);
+}
+
 /* Fix para inputs en iOS que hacen zoom */
 input, select, textarea {
   font-size: 16px;
