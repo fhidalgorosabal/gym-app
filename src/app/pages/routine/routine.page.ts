@@ -224,7 +224,7 @@ interface ExerciseProgress {
               </svg>
             </button>
           </div>
-          <div class="flex-1 overflow-y-auto pb-safe">
+          <div class="flex-1 overflow-y-auto pb-safe-4">
             <app-exercise-preview [exercise]="ex" [showConfirm]="false" />
           </div>
         </div>

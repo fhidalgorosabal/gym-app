@@ -99,6 +99,30 @@ export class RoutineService {
     this.saveRoutines();
   }
 
+  /** Clona la rutina de un día en otro. Los ejercicios reciben un id propio nuevo.
+   * @param mode 'replace' pisa la rutina destino; 'append' añade al final.
+   * @returns cantidad de ejercicios copiados. */
+  copyRoutine(fromDayId: number, toDayId: number, mode: 'replace' | 'append' = 'replace'): number {
+    if (fromDayId === toDayId) return 0;
+    const source = this.getRoutine(fromDayId);
+    if (source.length === 0) return 0;
+
+    const base = mode === 'append' ? this.getRoutine(toDayId).length : 0;
+    const cloned: RoutineExercise[] = source.map((e, i) => ({
+      ...e,
+      id: crypto.randomUUID(),
+      order: base + i
+    }));
+
+    this.routines.update(routines => {
+      const rest = routines.filter(r => r.day_id !== toDayId);
+      const existing = mode === 'append' ? this.getRoutine(toDayId) : [];
+      return [...rest, { day_id: toDayId, exercises: [...existing, ...cloned] }];
+    });
+    this.saveRoutines();
+    return cloned.length;
+  }
+
   moveExercise(dayId: number, fromIndex: number, toIndex: number) {
     if (fromIndex === toIndex) return;
 

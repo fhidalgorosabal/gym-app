@@ -214,6 +214,74 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
         </svg>
         {{ lang.t('setupDay.addExercise') }}
       </button>
+
+      <!-- Botón copiar desde otro día -->
+      <button
+        (click)="openCopy()"
+        class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-red-600 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 active:bg-red-100"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+        </svg>
+        {{ lang.t('setupDay.copyFrom') }}
+      </button>
+
+      <!-- PANEL: copiar desde otro día -->
+      @if (copyOpen()) {
+        <div class="fixed inset-0 z-50 bg-black/50" (click)="closeCopy()"></div>
+        <div class="fixed inset-x-0 bottom-0 z-50 flex max-h-[85vh] flex-col rounded-t-2xl bg-white shadow-xl">
+          <div class="flex items-center gap-2 border-b px-4 py-3">
+            <h2 class="min-w-0 flex-1 truncate text-lg font-bold text-gray-800">{{ lang.t('setupDay.copyTitle') }}</h2>
+            <button
+              (click)="closeCopy()"
+              [attr.aria-label]="lang.t('close')"
+              class="rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+            >
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex-1 overflow-y-auto p-4 pb-safe-4">
+            @if (copyableDays().length === 0) {
+              <p class="py-8 text-center text-sm text-gray-500">{{ lang.t('setupDay.copyNoDays') }}</p>
+            } @else if (copySourceDayId() === null) {
+              <!-- Paso 1: elegir día origen -->
+              <ul class="space-y-2">
+                @for (d of copyableDays(); track d.id) {
+                  <li>
+                    <button
+                      (click)="pickSource(d.id)"
+                      class="flex w-full items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-left transition-colors hover:border-red-500 hover:bg-red-50 active:scale-[0.99]"
+                    >
+                      <span class="text-sm font-medium text-gray-800">{{ lang.dayName(d.id) }}</span>
+                      <span class="text-xs text-gray-400">{{ d.count }} {{ lang.t('exercises') }}</span>
+                    </button>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <!-- Paso 2: destino con ejercicios → reemplazar o añadir -->
+              <p class="text-sm text-gray-600">{{ lang.t('setupDay.copyExistsQuestion') }}</p>
+              <div class="mt-4 grid grid-cols-1 gap-2">
+                <button
+                  (click)="doCopy('replace')"
+                  class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-700 active:bg-red-800"
+                >
+                  {{ lang.t('setupDay.copyReplace') }}
+                </button>
+                <button
+                  (click)="doCopy('append')"
+                  class="w-full rounded-xl border border-red-600 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 active:bg-red-100"
+                >
+                  {{ lang.t('setupDay.copyAppend') }}
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
 
     <!-- Selector de ejercicios -->
@@ -240,6 +308,18 @@ export default class SetupDayPage implements OnInit {
     { value: 'Minutos', labelKey: 'unit.minutes' }
   ];
 
+  /** Panel "copiar desde otro día". */
+  copyOpen = signal(false);
+  /** Día origen elegido (null = aún no elegido). */
+  copySourceDayId = signal<number | null>(null);
+
+  /** Días (distintos del actual) que tienen ejercicios, con su conteo. */
+  copyableDays = computed(() =>
+    this.routineService.allDays()
+      .filter(d => d.id !== this.dayId() && this.routineService.getRoutine(d.id).length > 0)
+      .map(d => ({ id: d.id, count: this.routineService.getRoutine(d.id).length }))
+  );
+
   dayId = computed(() => Number(this.day()));
   dayName = computed(() => this.lang.dayName(this.dayId()));
   exercises = computed(() => this.routineService.getRoutine(this.dayId()));
@@ -259,6 +339,37 @@ export default class SetupDayPage implements OnInit {
 
   openSelector() {
     this.selectorOpen.set(true);
+  }
+
+  /** Abre el panel de copia (reinicia el día origen). */
+  openCopy() {
+    this.copySourceDayId.set(null);
+    this.copyOpen.set(true);
+  }
+
+  closeCopy() {
+    this.copyOpen.set(false);
+    this.copySourceDayId.set(null);
+  }
+
+  /** Elige el día origen. Si el destino está vacío, copia directo; si no, pide reemplazar/añadir. */
+  pickSource(fromDayId: number) {
+    if (this.exercises().length === 0) {
+      this.applyCopy(fromDayId, 'replace');
+    } else {
+      this.copySourceDayId.set(fromDayId);
+    }
+  }
+
+  /** Ejecuta la copia con el modo elegido en el paso 2. */
+  doCopy(mode: 'replace' | 'append') {
+    const from = this.copySourceDayId();
+    if (from !== null) this.applyCopy(from, mode);
+  }
+
+  private applyCopy(fromDayId: number, mode: 'replace' | 'append') {
+    this.routineService.copyRoutine(fromDayId, this.dayId(), mode);
+    this.closeCopy();
   }
 
   onExerciseSelected(exercise: Exercise) {

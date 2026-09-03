@@ -26,6 +26,13 @@ export type UIKey =
   | 'setupDay.noExercises'
   | 'setupDay.addForThisDay'
   | 'setupDay.addExercise'
+  | 'setupDay.copyFrom'
+  | 'setupDay.copyTitle'
+  | 'setupDay.copyNoDays'
+  | 'setupDay.copyExistsQuestion'
+  | 'setupDay.copyReplace'
+  | 'setupDay.copyAppend'
+  | 'setupDay.copied'
   | 'setupDay.sets'
   | 'setupDay.reps'
   | 'setupDay.unit'
@@ -98,6 +105,13 @@ const es: Dict = {
   'setupDay.noExercises': 'No hay ejercicios configurados',
   'setupDay.addForThisDay': 'Agrega ejercicios para este día',
   'setupDay.addExercise': 'Agregar ejercicio',
+  'setupDay.copyFrom': 'Copiar desde otro día',
+  'setupDay.copyTitle': 'Copiar rutina desde',
+  'setupDay.copyNoDays': 'No hay otros días con ejercicios para copiar.',
+  'setupDay.copyExistsQuestion': 'Este día ya tiene ejercicios. ¿Qué quieres hacer?',
+  'setupDay.copyReplace': 'Reemplazar',
+  'setupDay.copyAppend': 'Añadir al final',
+  'setupDay.copied': 'Ejercicios copiados',
   'setupDay.sets': 'Series',
   'setupDay.reps': 'Repeticiones',
   'setupDay.unit': 'Unidad',
@@ -169,6 +183,13 @@ const en: Dict = {
   'setupDay.noExercises': 'No exercises configured',
   'setupDay.addForThisDay': 'Add exercises for this day',
   'setupDay.addExercise': 'Add exercise',
+  'setupDay.copyFrom': 'Copy from another day',
+  'setupDay.copyTitle': 'Copy routine from',
+  'setupDay.copyNoDays': 'No other days with exercises to copy.',
+  'setupDay.copyExistsQuestion': 'This day already has exercises. What do you want to do?',
+  'setupDay.copyReplace': 'Replace',
+  'setupDay.copyAppend': 'Add to the end',
+  'setupDay.copied': 'Exercises copied',
   'setupDay.sets': 'Sets',
   'setupDay.reps': 'Reps',
   'setupDay.unit': 'Unit',
@@ -240,6 +261,13 @@ const ptBR: Dict = {
   'setupDay.noExercises': 'Não há exercícios configurados',
   'setupDay.addForThisDay': 'Adicione exercícios para este dia',
   'setupDay.addExercise': 'Adicionar exercício',
+  'setupDay.copyFrom': 'Copiar de outro dia',
+  'setupDay.copyTitle': 'Copiar rotina de',
+  'setupDay.copyNoDays': 'Não há outros dias com exercícios para copiar.',
+  'setupDay.copyExistsQuestion': 'Este dia já tem exercícios. O que você quer fazer?',
+  'setupDay.copyReplace': 'Substituir',
+  'setupDay.copyAppend': 'Adicionar ao final',
+  'setupDay.copied': 'Exercícios copiados',
   'setupDay.sets': 'Séries',
   'setupDay.reps': 'Repetições',
   'setupDay.unit': 'Unidade',

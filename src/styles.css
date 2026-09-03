@@ -48,9 +48,17 @@ button, a {
 .pb-safe-3 {
   padding-bottom: calc(0.75rem + var(--safe-area-bottom));
 }
+/* Padding inferior con base fija + inset (para el contenedor principal de páginas). */
+.pb-safe-4 {
+  padding-bottom: calc(1rem + var(--safe-area-bottom));
+}
 /* Margen inferior aditivo con el inset (no pisa el padding propio del elemento). */
 .mb-safe {
   margin-bottom: var(--safe-area-bottom);
+}
+/* Margen inferior con base fija + inset (garantiza respiro aunque el inset sea 0). */
+.mb-safe-4 {
+  margin-bottom: calc(1rem + var(--safe-area-bottom));
 }
 
 /* Fix para inputs en iOS que hacen zoom */
