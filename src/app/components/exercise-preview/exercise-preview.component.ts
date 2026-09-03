@@ -55,15 +55,17 @@ import { LanguageService } from '../../services/language.service';
           </ol>
         </div>
 
-        <!-- Botón confirmar -->
-        <div class="sticky bottom-0 border-t bg-white px-4 py-3 pb-safe-3">
-          <button
-            (click)="confirmed.emit(ex)"
-            class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
-          >
-            {{ langSvc.t('selector.selectThis') }}
-          </button>
-        </div>
+        <!-- Botón confirmar (oculto en modo solo-consulta) -->
+        @if (showConfirm()) {
+          <div class="sticky bottom-0 border-t bg-white px-4 py-3 pb-safe-3">
+            <button
+              (click)="confirmed.emit(ex)"
+              class="w-full rounded-xl bg-red-600 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
+            >
+              {{ langSvc.t('selector.selectThis') }}
+            </button>
+          </div>
+        }
       </div>
     }
   `
@@ -76,6 +78,8 @@ export class ExercisePreviewComponent {
   readonly lang = this.languageService.lang;
 
   exercise = input.required<Exercise | null>();
+  /** Si es false, oculta el botón "Seleccionar" (modo solo-consulta, p. ej. desde la rutina). */
+  showConfirm = input<boolean>(true);
   confirmed = output<Exercise>();
   closed = output<void>();
 

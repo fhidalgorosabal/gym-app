@@ -3,8 +3,11 @@ import { Router } from '@angular/router';
 import { RoutineService } from '../../services/routine.service';
 import { SoundService } from '../../services/sound.service';
 import { LanguageService } from '../../services/language.service';
+import { ExerciseService } from '../../services/exercise.service';
 import { RoutineExercise } from '../../models/routine.model';
+import { Exercise } from '../../models/exercise.model';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+import { ExercisePreviewComponent } from '../../components/exercise-preview/exercise-preview.component';
 
 type RoutineState = 'ready' | 'exercising' | 'resting-set' | 'resting-exercise' | 'completed';
 
@@ -17,7 +20,7 @@ interface ExerciseProgress {
 
 @Component({
   selector: 'app-routine',
-  imports: [CapitalizePipe],
+  imports: [CapitalizePipe, ExercisePreviewComponent],
   template: `
     <div class="p-4">
       @switch (routineState()) {
@@ -101,43 +104,55 @@ interface ExerciseProgress {
             @for (exercise of exercises(); track exercise.id; let i = $index) {
               <li class="overflow-hidden rounded-xl border bg-white shadow-sm">
                 <!-- Cabecera (siempre visible) -->
-                <button
-                  (click)="expandExercise(i)"
-                  class="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors"
-                  [class.bg-red-50]="expandedIndex() === i"
-                  [disabled]="routineState() === 'resting-set' || routineState() === 'resting-exercise'"
-                >
-                  <!-- Estado -->
-                  <div class="flex h-8 w-8 items-center justify-center rounded-full"
-                    [class.bg-green-100]="getProgress(exercise.id).completed"
-                    [class.bg-red-100]="expandedIndex() === i && !getProgress(exercise.id).completed"
-                    [class.bg-gray-100]="expandedIndex() !== i && !getProgress(exercise.id).completed"
+                <div class="flex items-center" [class.bg-red-50]="expandedIndex() === i">
+                  <button
+                    (click)="expandExercise(i)"
+                    class="flex min-w-0 flex-1 items-center gap-3 px-4 py-3 text-left transition-colors"
+                    [disabled]="routineState() === 'resting-set' || routineState() === 'resting-exercise'"
                   >
-                    @if (getProgress(exercise.id).completed) {
-                      <svg class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
-                    } @else {
-                      <span class="text-xs font-bold"
-                        [class.text-red-600]="expandedIndex() === i"
-                        [class.text-gray-400]="expandedIndex() !== i"
-                      >{{ i + 1 }}</span>
-                    }
-                  </div>
+                    <!-- Estado -->
+                    <div class="flex h-8 w-8 items-center justify-center rounded-full"
+                      [class.bg-green-100]="getProgress(exercise.id).completed"
+                      [class.bg-red-100]="expandedIndex() === i && !getProgress(exercise.id).completed"
+                      [class.bg-gray-100]="expandedIndex() !== i && !getProgress(exercise.id).completed"
+                    >
+                      @if (getProgress(exercise.id).completed) {
+                        <svg class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      } @else {
+                        <span class="text-xs font-bold"
+                          [class.text-red-600]="expandedIndex() === i"
+                          [class.text-gray-400]="expandedIndex() !== i"
+                        >{{ i + 1 }}</span>
+                      }
+                    </div>
 
-                  <!-- Info -->
-                  <img
-                    [src]="exercise.image"
-                    [alt]="exercise.name"
-                    class="h-10 w-10 rounded-lg bg-gray-100 object-cover"
-                  />
-                  <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name | capitalize }}</p>
-                    <p class="text-xs text-gray-500">
-                      {{ getProgress(exercise.id).currentSet }}/{{ exercise.sets }} {{ lang.t('routine.series') }} · {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('unit.repetitionsShort') : lang.t('unit.minutesShort') }}
-                    </p>
-                  </div>
-                </button>
+                    <!-- Info -->
+                    <img
+                      [src]="exercise.image"
+                      [alt]="exercise.name"
+                      class="h-10 w-10 rounded-lg bg-gray-100 object-cover"
+                    />
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate text-sm font-medium text-gray-800">{{ exercise.name | capitalize }}</p>
+                      <p class="text-xs text-gray-500">
+                        {{ getProgress(exercise.id).currentSet }}/{{ exercise.sets }} {{ lang.t('routine.series') }} · {{ exercise.reps }} {{ exercise.unit === 'Repeticiones' ? lang.t('unit.repetitionsShort') : lang.t('unit.minutesShort') }}
+                      </p>
+                    </div>
+                  </button>
+
+                  <!-- Ver detalles del ejercicio (GIF + instrucciones) -->
+                  <button
+                    (click)="openDetail(exercise)"
+                    [attr.aria-label]="lang.t('routine.viewDetails')"
+                    class="mr-2 flex-shrink-0 rounded-full p-2 text-red-600 hover:bg-red-50 hover:text-red-700"
+                  >
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </button>
+                </div>
 
                 <!-- Contenido expandido -->
                 @if (expandedIndex() === i && !getProgress(exercise.id).completed) {
@@ -192,6 +207,28 @@ interface ExerciseProgress {
           </ul>
         }
       }
+
+      <!-- PANEL DE DETALLE DEL EJERCICIO (GIF + instrucciones, solo consulta) -->
+      @if (detailExercise(); as ex) {
+        <div class="fixed inset-0 z-50 bg-black/50" (click)="closeDetail()"></div>
+        <div class="fixed inset-x-0 bottom-0 z-50 flex max-h-[90vh] flex-col rounded-t-2xl bg-white shadow-xl">
+          <div class="flex items-center gap-2 border-b px-4 py-3">
+            <h2 class="min-w-0 flex-1 truncate text-lg font-bold text-gray-800">{{ lang.exerciseName(ex) | capitalize }}</h2>
+            <button
+              (click)="closeDetail()"
+              [attr.aria-label]="lang.t('close')"
+              class="rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-800"
+            >
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex-1 overflow-y-auto pb-safe">
+            <app-exercise-preview [exercise]="ex" [showConfirm]="false" />
+          </div>
+        </div>
+      }
     </div>
   `
 })
@@ -205,6 +242,9 @@ export default class RoutinePage implements OnInit, OnDestroy {
   restTimeRemaining = signal(0);
   restTimeTotal = signal(0);
   elapsedTime = signal(0);
+
+  /** Ejercicio del catálogo cuyo detalle (GIF + instrucciones) se está mostrando. */
+  detailExercise = signal<Exercise | null>(null);
 
   private timerInterval: ReturnType<typeof setInterval> | null = null;
   private elapsedInterval: ReturnType<typeof setInterval> | null = null;
@@ -238,10 +278,16 @@ export default class RoutinePage implements OnInit, OnDestroy {
   constructor(
     private routineService: RoutineService,
     private soundService: SoundService,
+    private exerciseService: ExerciseService,
     private router: Router
   ) {}
 
   ngOnInit() {
+    // Asegurar que el catálogo esté cargado (para resolver el detalle del ejercicio)
+    if (!this.exerciseService.isLoaded()) {
+      this.exerciseService.load();
+    }
+
     // Inicializar progreso para cada ejercicio
     const exs = this.exercises();
     this.progress.set(
@@ -266,6 +312,18 @@ export default class RoutinePage implements OnInit, OnDestroy {
   getProgress(exerciseId: string): ExerciseProgress {
     return this.progress().find(p => p.exerciseId === exerciseId) ??
       { exerciseId, currentSet: 0, totalSets: 0, completed: false };
+  }
+
+  /** Abre el detalle (GIF + instrucciones) resolviendo el ejercicio del catálogo por su id. */
+  openDetail(exercise: RoutineExercise) {
+    const full = this.exerciseService.getById(exercise.exercise_id);
+    if (full) {
+      this.detailExercise.set(full);
+    }
+  }
+
+  closeDetail() {
+    this.detailExercise.set(null);
   }
 
   getSetsArray(sets: number): number[] {

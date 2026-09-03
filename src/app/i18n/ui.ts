@@ -8,6 +8,7 @@ export type UIKey =
   | 'reps'
   | 'min'
   | 'back'
+  | 'close'
   | 'done'
   // Home
   | 'home.subtitle'
@@ -57,6 +58,7 @@ export type UIKey =
   | 'routine.finishLastSet'
   | 'routine.finishSet'
   | 'routine.exerciseCompleted'
+  | 'routine.viewDetails'
   // Selector
   | 'selector.title'
   | 'selector.search'
@@ -78,6 +80,7 @@ const es: Dict = {
   reps: 'reps',
   min: 'min',
   back: 'Volver',
+  close: 'Cerrar',
   done: 'Listo',
 
   'home.subtitle': 'Tu rutina de ejercicios personalizada',
@@ -127,6 +130,7 @@ const es: Dict = {
   'routine.finishLastSet': '¡Terminé última serie! ✓',
   'routine.finishSet': 'Terminé la serie →',
   'routine.exerciseCompleted': '¡Completado! ✓',
+  'routine.viewDetails': 'Ver detalles del ejercicio',
 
   'selector.title': 'Seleccionar ejercicio',
   'selector.search': 'Buscar ejercicio...',
@@ -147,6 +151,7 @@ const en: Dict = {
   reps: 'reps',
   min: 'min',
   back: 'Back',
+  close: 'Close',
   done: 'Done',
 
   'home.subtitle': 'Your personalized workout routine',
@@ -196,6 +201,7 @@ const en: Dict = {
   'routine.finishLastSet': 'Finished last set! ✓',
   'routine.finishSet': 'Finished the set →',
   'routine.exerciseCompleted': 'Completed! ✓',
+  'routine.viewDetails': 'View exercise details',
 
   'selector.title': 'Select exercise',
   'selector.search': 'Search exercise...',
@@ -216,6 +222,7 @@ const ptBR: Dict = {
   reps: 'reps',
   min: 'min',
   back: 'Voltar',
+  close: 'Fechar',
   done: 'Pronto',
 
   'home.subtitle': 'Sua rotina de exercícios personalizada',
@@ -265,6 +272,7 @@ const ptBR: Dict = {
   'routine.finishLastSet': 'Terminei a última série! ✓',
   'routine.finishSet': 'Terminei a série →',
   'routine.exerciseCompleted': 'Concluído! ✓',
+  'routine.viewDetails': 'Ver detalhes do exercício',
 
   'selector.title': 'Selecionar exercício',
   'selector.search': 'Buscar exercício...',
