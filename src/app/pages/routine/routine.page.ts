@@ -56,6 +56,24 @@ interface ExerciseProgress {
         }
 
         @default {
+          @if (exercises().length === 0) {
+            <!-- ESTADO VACÍO: día sin ejercicios -->
+            <div class="flex min-h-[70vh] flex-col items-center justify-center text-center">
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-50">
+                <svg class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 class="mt-4 text-lg font-bold text-gray-800">{{ dayName() }}</h2>
+              <p class="mt-1 text-sm text-gray-500">{{ lang.t('routine.emptyTitle') }}</p>
+              <button
+                (click)="goToConfigure()"
+                class="mt-6 rounded-xl bg-red-600 px-8 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700 active:bg-red-800"
+              >
+                {{ lang.t('routine.configureDay') }}
+              </button>
+            </div>
+          } @else {
           <!-- HEADER DE RUTINA -->
           <div class="flex items-center justify-between">
             <div>
@@ -205,6 +223,7 @@ interface ExerciseProgress {
               </li>
             }
           </ul>
+          }
         }
       }
 
@@ -440,5 +459,9 @@ export default class RoutinePage implements OnInit, OnDestroy {
 
   goHome() {
     this.router.navigate(['/home']);
+  }
+
+  goToConfigure() {
+    this.router.navigate(['/setup', this.dayId()]);
   }
 }

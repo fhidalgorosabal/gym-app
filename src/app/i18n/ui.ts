@@ -12,6 +12,9 @@ export type UIKey =
   | 'done'
   // Home
   | 'home.subtitle'
+  | 'home.today'
+  | 'home.selectDay'
+  | 'home.emptyDay'
   | 'home.doTodayRoutine'
   | 'home.exercisesConfigured'
   | 'home.noRoutineToday'
@@ -66,6 +69,8 @@ export type UIKey =
   | 'routine.finishSet'
   | 'routine.exerciseCompleted'
   | 'routine.viewDetails'
+  | 'routine.emptyTitle'
+  | 'routine.configureDay'
   // Selector
   | 'selector.title'
   | 'selector.search'
@@ -91,6 +96,9 @@ const es: Dict = {
   done: 'Listo',
 
   'home.subtitle': 'Tu rutina de ejercicios personalizada',
+  'home.today': 'Hoy',
+  'home.selectDay': 'Elige un día para entrenar',
+  'home.emptyDay': 'Sin ejercicios · toca para configurar',
   'home.doTodayRoutine': 'Hacer rutina de hoy',
   'home.exercisesConfigured': 'ejercicios configurados',
   'home.noRoutineToday': 'No hay rutina configurada para hoy',
@@ -98,7 +106,7 @@ const es: Dict = {
 
   'setup.title': 'Configurar Rutina',
   'setup.subtitle': 'Activa los días que entrenas y configura los ejercicios de cada uno.',
-  'setup.exercisesLink': 'Ejercicios',
+  'setup.exercisesLink': 'Configurar',
   'setup.activate': 'Activar',
   'setup.deactivate': 'Desactivar',
 
@@ -145,6 +153,8 @@ const es: Dict = {
   'routine.finishSet': 'Terminé la serie →',
   'routine.exerciseCompleted': '¡Completado! ✓',
   'routine.viewDetails': 'Ver detalles del ejercicio',
+  'routine.emptyTitle': 'Este día no tiene ejercicios',
+  'routine.configureDay': 'Configurar día',
 
   'selector.title': 'Seleccionar ejercicio',
   'selector.search': 'Buscar ejercicio...',
@@ -169,6 +179,9 @@ const en: Dict = {
   done: 'Done',
 
   'home.subtitle': 'Your personalized workout routine',
+  'home.today': 'Today',
+  'home.selectDay': 'Pick a day to train',
+  'home.emptyDay': 'No exercises · tap to set up',
   'home.doTodayRoutine': "Do today's routine",
   'home.exercisesConfigured': 'exercises configured',
   'home.noRoutineToday': 'No routine configured for today',
@@ -176,7 +189,7 @@ const en: Dict = {
 
   'setup.title': 'Configure Routine',
   'setup.subtitle': 'Enable the days you train and set up the exercises for each one.',
-  'setup.exercisesLink': 'Exercises',
+  'setup.exercisesLink': 'Configure',
   'setup.activate': 'Enable',
   'setup.deactivate': 'Disable',
 
@@ -223,6 +236,8 @@ const en: Dict = {
   'routine.finishSet': 'Finished the set →',
   'routine.exerciseCompleted': 'Completed! ✓',
   'routine.viewDetails': 'View exercise details',
+  'routine.emptyTitle': 'This day has no exercises',
+  'routine.configureDay': 'Set up day',
 
   'selector.title': 'Select exercise',
   'selector.search': 'Search exercise...',
@@ -247,6 +262,9 @@ const ptBR: Dict = {
   done: 'Pronto',
 
   'home.subtitle': 'Sua rotina de exercícios personalizada',
+  'home.today': 'Hoje',
+  'home.selectDay': 'Escolha um dia para treinar',
+  'home.emptyDay': 'Sem exercícios · toque para configurar',
   'home.doTodayRoutine': 'Fazer rotina de hoje',
   'home.exercisesConfigured': 'exercícios configurados',
   'home.noRoutineToday': 'Não há rotina configurada para hoje',
@@ -254,7 +272,7 @@ const ptBR: Dict = {
 
   'setup.title': 'Configurar Rotina',
   'setup.subtitle': 'Ative os dias em que você treina e configure os exercícios de cada um.',
-  'setup.exercisesLink': 'Exercícios',
+  'setup.exercisesLink': 'Configurar',
   'setup.activate': 'Ativar',
   'setup.deactivate': 'Desativar',
 
@@ -301,6 +319,8 @@ const ptBR: Dict = {
   'routine.finishSet': 'Terminei a série →',
   'routine.exerciseCompleted': 'Concluído! ✓',
   'routine.viewDetails': 'Ver detalhes do exercício',
+  'routine.emptyTitle': 'Este dia não tem exercícios',
+  'routine.configureDay': 'Configurar dia',
 
   'selector.title': 'Selecionar exercício',
   'selector.search': 'Buscar exercício...',

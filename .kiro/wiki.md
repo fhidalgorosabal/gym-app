@@ -181,25 +181,55 @@ Cronología de esta línea de trabajo (rama `develop`):
       `flex-1 overflow-y-auto pb-safe-3`, para que la lista scrollee dentro del menú y el último
       ítem respete la barra del sistema.
     Build OK y `npx cap sync android` OK.
+13. **Label de reps/min según unidad (2026-09-03)** — en el formulario de edición de un
+    ejercicio, el campo numérico siempre decía "Repeticiones" aunque la unidad fuera "Minutos".
+    Ahora el label depende de la unidad seleccionada. Archivo: `setup-day.page.ts`.
+14. **Dropdown propio para la unidad (2026-09-03)** — el selector de Unidad usaba `<select>`
+    nativo (estilo del sistema, incoherente con la app). Reemplazado por un dropdown propio con
+    el mismo patrón del selector de idioma. Decisión añadida a "no rehacer": no usar `<select>`
+    nativo ni para idioma ni para unidad. Archivo: `setup-day.page.ts`.
+15. **Ver detalles del ejercicio desde la rutina (2026-09-03)** — botón de información (ⓘ rojo)
+    en cada ejercicio del acordeón de rutina que abre un panel slide-up con GIF/animación,
+    metadata e instrucciones paso a paso. Reutiliza `ExercisePreviewComponent` con un nuevo input
+    `showConfirm` (false en modo consulta, oculta el botón "Seleccionar"). Resuelve el ejercicio
+    del catálogo por `exercise_id` vía `ExerciseService.getById()`. Archivos:
+    `exercise-preview.component.ts`, `routine.page.ts`.
+16. **Copiar rutina desde otro día (2026-09-03)** — botón "Copiar desde otro día" en la config
+    del día (`/setup/:day`). Panel con los días que tienen ejercicios. Si el destino ya tiene
+    ejercicios, el usuario elige "Reemplazar" o "Añadir al final"; si está vacío, copia directo;
+    si no hay otros días, muestra mensaje. `RoutineService.copyRoutine()` clona con UUID nuevo.
+    Archivos: `routine.service.ts`, `setup-day.page.ts`.
+17. **Safe-area global en `<main>` (2026-09-03)** — los botones de las páginas quedaban bajo la
+    barra de navegación de Android porque el `padding-bottom` de safe-area del `body` no aplica a
+    elementos `fixed` ni al flujo del `<main>`. Se añadió `pb-safe-4` (1rem + inset) al `<main>`
+    en `app.html`, que cubre todas las páginas. También aplicada a los paneles slide-up de copia
+    y detalle (`setup-day.page.ts`, `routine.page.ts`). Utilidades: `pb-safe-4`, `mb-safe-4`.
+18. **Rediseño de la Home (2026-09-03)** — se rediseñó la pantalla principal:
+    - **Header:** el nombre "GymApp" es ahora un enlace a `/home` (sin estilos de
+      focus/hover/active). Sin logo en el header.
+    - **Logo:** imagen del pesista (`assets/icon-only.png` → `public/logo.png`) centrada arriba,
+      reemplazando el emoji 🏋️.
+    - **Carrusel vertical de días:** lista de 3 tarjetas (anterior, central, siguiente). Central
+      más grande (escala 100%, opacidad 100%, sombra); laterales más pequeñas (escala 90%,
+      opacidad 40%, sin detalle) dando sensación de profundidad. Circular infinito (antes de
+      Lunes → Domingo). Navegación por chevrons ∧/∨ y tap en las tarjetas laterales. Solo la
+      central navega: con ejercicios → rutina; sin ejercicios → configurar (`/setup/:day`).
+      Transición suave (`duration-300`). Arranca posicionado en hoy, con badge "HOY".
+    - Archivos: `header.component.ts`, `home.page.ts`, `public/logo.png`.
+19. **Estado vacío en la rutina (2026-09-03)** — si un día no tiene ejercicios, la pantalla de
+    rutina muestra un estado vacío centrado con ícono, nombre del día, mensaje y botón
+    "Configurar día" que navega a `/setup/:day`. Archivo: `routine.page.ts`.
+20. **Texto "Configurar" en setup (2026-09-03)** — en la pantalla de configurar días, el enlace
+    de cada día activo pasó de decir "Ejercicios" a "Configurar" (es/en/pt-BR). Archivo:
+    `i18n/ui.ts`.
 
-Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR`,
-`Mejora de iconos de tipos`, `Ajuste de iconos, splash y safe areas en rojo`.
-
-> **Commiteado y subido (2026-09-02):** revisión manual de nombres + limpieza de `scripts/` +
-> pipe `capitalize` + agente `gymapp` + preview embebida como paso 3 del selector (punto 9) +
-> icono de calendario para los días en el menú (punto 10). En `origin/develop` (últimos commits
-> `fix: Mejoras en el componente de seleccionar ejercicios` y
-> `feat: Icono calendario para los dias en el menu`).
->
-> **Commiteado y subido (2026-09-03):** búsqueda por nombre traducido en el selector (punto 11),
-> ya en `origin/develop` como `fix: Ajuste en buscador`. Ya no queda nada de sesiones previas
-> pendiente de commit.
->
-> **Pendiente de commit (2026-09-03):** safe-area inferior en overlays (selector, preview y menú;
-> ver punto 12). Archivos: `src/styles.css`, `exercise-selector.component.ts`,
-> `exercise-preview.component.ts`, `menu.component.ts`.
-> Mensaje sugerido:
-> `fix: respetar safe-area inferior en el selector de ejercicios y el menú lateral`
+> **Pendiente de commit (2026-09-03):** puntos 13–20. Incluye también la limpieza de docs
+> (eliminados `plan-idiomas.md`, `plan-traduccion-datos.md`, `plan-nombres-ejercicios.md`,
+> `sqlite-strategy.md` y `plan-home-carrusel.md`; contenido absorbido en esta wiki).
+> Archivos modificados: `src/styles.css`, `src/app/app.html`, `public/logo.png` (nuevo),
+> `header.component.ts`, `home.page.ts`, `routine.page.ts`, `setup-day.page.ts`,
+> `routine.service.ts`, `exercise-preview.component.ts`, `i18n/ui.ts`, `i18n/exercise-terms.ts`,
+> `.kiro/wiki.md`, `.kiro/README.md`, `.kiro/fases.md`, `.kiro/steering/project.md`.
 
 ---
 
@@ -229,16 +259,16 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 4. Rama de trabajo: `develop`.
 5. (Opcional) Activa el agente con `/agent gymapp` para no reconfirmar comandos del flujo.
 
-> **Estado al 2026-09-03:** fases 1–5 + sistema de idiomas completos. Nombres 1324/1324
-> revisados a mano; `scripts/` eliminado; pipe `capitalize`; preview embebida como paso 3 del
-> selector; icono de calendario en el menú; búsqueda por nombre traducido — todo commiteado y
-> subido a `origin/develop`. En esta sesión se arregló el solapamiento de la barra de
-> navegación/gestos del sistema con los overlays (selector, preview y menú) vía utilidades de
-> safe-area inferior (punto 12), **pendiente de commit**. Próximo paso: commitear ese arreglo,
-> luego Fase 6 (pulido/UX).
+> **Estado al 2026-09-03 (sesión 2):** además de lo anterior, en esta sesión se hicieron
+> mejoras de UX significativas: safe-area global en `<main>` y en paneles, dropdown propio para
+> la unidad, ver detalles del ejercicio desde la rutina, copiar rutina desde otro día,
+> rediseño de la Home con carrusel vertical de días + logo, estado vacío en la rutina, texto
+> "Configurar" en setup. Se limpiaron los planes completados (absorbidos en esta wiki) y se
+> descartó SQLite. Se detalló exportar/importar rutinas en la Fase 7. **Pendiente de commit**
+> (puntos 12–20 del historial).
 
 ### Próximos pasos sugeridos (pendientes)
-- **Commit pendiente:** safe-area inferior en overlays (punto 12). Ya verificado con
+- **Commit pendiente:** puntos 12–20 del historial + limpieza de docs. Ya verificado con
   `npm run build` y `npx cap sync android`.
 - **Arreglo menor de test:** `src/app/app.spec.ts` (autogenerado) falla con
   `No provider found for ActivatedRoute` — añadir `provideRouter([])` al TestBed. Preexistente,
@@ -249,7 +279,8 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
   `.webp` — corregir al integrarlo).
 - **Idiomas — pulido opcional:** `LOCALE_ID` dinámico para fechas/números (única tarea que
   quedaba de la etapa 3 del antiguo `plan-idiomas.md`).
-- **Fase 7 — Features avanzados:** historial de entrenamientos, estadísticas, sync con backend, etc.
+- **Fase 7 — Features avanzados:** historial de entrenamientos, estadísticas, exportar/importar
+  rutinas (detallado en `fases.md`), sync con backend, etc.
 
 ### Cosas que NO hay que rehacer
 - No volver a `<select>` nativo (ni para el idioma ni para la unidad de ejercicio): usar

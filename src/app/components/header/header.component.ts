@@ -1,9 +1,10 @@
 import { Component, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { LanguageSelectorComponent } from '../language-selector/language-selector.component';
 
 @Component({
   selector: 'app-header',
-  imports: [LanguageSelectorComponent],
+  imports: [LanguageSelectorComponent, RouterLink],
   template: `
     <header class="sticky top-0 z-40 flex items-center gap-2 bg-red-600 px-4 pb-3 pt-8 text-white shadow-md">
       <button
@@ -15,7 +16,11 @@ import { LanguageSelectorComponent } from '../language-selector/language-selecto
           <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <h1 class="flex-1 truncate text-center text-lg font-bold tracking-wide">GymApp</h1>
+      <a
+        routerLink="/home"
+        aria-label="Ir al inicio"
+        class="flex-1 truncate text-center text-lg font-bold tracking-wide focus:outline-none"
+      >GymApp</a>
       <app-language-selector />
     </header>
   `
