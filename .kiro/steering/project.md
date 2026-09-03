@@ -19,7 +19,7 @@ hecho, decisiones, próximos pasos, cómo compilar). No la reproduzcas aquí; co
 - Idiomas soportados: es / en / pt-BR (ver `LanguageService`, `i18n/`).
 
 ## No rehacer (decisiones tomadas)
-- Selector de idioma: dropdown propio, NO `<select>` nativo.
+- Selectores de idioma y de unidad de ejercicio: dropdown propio, NO `<select>` nativo.
 - StatusBar no-overlay: NO reañadir `padding-top` de safe-area en el body.
 - Nombre de ejercicio en rutinas: se guarda en el idioma del momento (no resolver por id al mostrar).
 - Nombres de ejercicios: revisados a mano (1324/1324) e incrustados en `name_i18n` del JSON.

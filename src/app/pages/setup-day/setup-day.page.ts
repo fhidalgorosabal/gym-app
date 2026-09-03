@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal, OnInit } from '@angular/core';
+import { Component, computed, inject, input, signal, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RoutineService } from '../../services/routine.service';
@@ -112,9 +112,9 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
                         class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       />
                     </div>
-                    <!-- Reps -->
+                    <!-- Reps / Minutos (según unidad) -->
                     <div>
-                      <label class="text-xs font-medium text-gray-600">{{ lang.t('setupDay.reps') }}</label>
+                      <label class="text-xs font-medium text-gray-600">{{ exercise.unit === 'Minutos' ? lang.t('unit.minutes') : lang.t('setupDay.reps') }}</label>
                       <input
                         type="number"
                         [ngModel]="exercise.reps"
@@ -125,16 +125,35 @@ import { CapitalizePipe } from '../../pipes/capitalize.pipe';
                       />
                     </div>
                     <!-- Unidad -->
-                    <div>
+                    <div class="unit-dropdown relative">
                       <label class="text-xs font-medium text-gray-600">{{ lang.t('setupDay.unit') }}</label>
-                      <select
-                        [ngModel]="exercise.unit"
-                        (ngModelChange)="updateField(exercise.id, 'unit', $event)"
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                      <!-- Dropdown propio (no <select> nativo, para coherencia visual con la app) -->
+                      <button
+                        type="button"
+                        (click)="toggleUnitDropdown(exercise.id)"
+                        [attr.aria-expanded]="unitDropdownId() === exercise.id"
+                        class="mt-1 flex w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-3 py-2 text-left text-sm focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
                       >
-                        <option value="Repeticiones">{{ lang.t('unit.repetitions') }}</option>
-                        <option value="Minutos">{{ lang.t('unit.minutes') }}</option>
-                      </select>
+                        <span class="text-gray-800">{{ exercise.unit === 'Minutos' ? lang.t('unit.minutes') : lang.t('unit.repetitions') }}</span>
+                        <svg class="h-4 w-4 flex-shrink-0 text-gray-400 transition-transform" [class.rotate-180]="unitDropdownId() === exercise.id" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      @if (unitDropdownId() === exercise.id) {
+                        <div class="absolute left-0 top-full z-20 mt-1 w-full overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black/10">
+                          @for (opt of unitOptions; track opt.value) {
+                            <button
+                              type="button"
+                              (click)="selectUnit(exercise.id, opt.value)"
+                              class="flex w-full items-center px-3 py-2.5 text-left text-sm transition-colors hover:bg-gray-100"
+                              [class.bg-red-50]="exercise.unit === opt.value"
+                              [class.font-semibold]="exercise.unit === opt.value"
+                            >
+                              <span class="text-gray-700">{{ lang.t(opt.labelKey) }}</span>
+                            </button>
+                          }
+                        </div>
+                      }
                     </div>
                     <!-- Descanso entre sets -->
                     <div>
@@ -212,6 +231,15 @@ export default class SetupDayPage implements OnInit {
   selectorOpen = signal(false);
   editingId = signal<string | null>(null);
 
+  /** Id del ejercicio cuyo dropdown de unidad está abierto (null = ninguno). */
+  unitDropdownId = signal<string | null>(null);
+
+  /** Opciones de unidad para el dropdown propio. */
+  readonly unitOptions: { value: Unit; labelKey: 'unit.repetitions' | 'unit.minutes' }[] = [
+    { value: 'Repeticiones', labelKey: 'unit.repetitions' },
+    { value: 'Minutos', labelKey: 'unit.minutes' }
+  ];
+
   dayId = computed(() => Number(this.day()));
   dayName = computed(() => this.lang.dayName(this.dayId()));
   exercises = computed(() => this.routineService.getRoutine(this.dayId()));
@@ -245,6 +273,28 @@ export default class SetupDayPage implements OnInit {
 
   updateField(exerciseId: string, field: keyof RoutineExercise, value: number | string) {
     this.routineService.updateExercise(this.dayId(), exerciseId, { [field]: value });
+  }
+
+  /** Abre/cierra el dropdown de unidad de un ejercicio. */
+  toggleUnitDropdown(exerciseId: string) {
+    this.unitDropdownId.update(id => id === exerciseId ? null : exerciseId);
+  }
+
+  /** Selecciona la unidad y cierra el dropdown. */
+  selectUnit(exerciseId: string, unit: Unit) {
+    this.updateField(exerciseId, 'unit', unit);
+    this.unitDropdownId.set(null);
+  }
+
+  /** Cierra el dropdown de unidad al tocar fuera de él. */
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (this.unitDropdownId()) {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.unit-dropdown')) {
+        this.unitDropdownId.set(null);
+      }
+    }
   }
 
   removeExercise(exerciseId: string) {

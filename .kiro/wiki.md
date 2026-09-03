@@ -252,7 +252,8 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 - **Fase 7 — Features avanzados:** historial de entrenamientos, estadísticas, sync con backend, etc.
 
 ### Cosas que NO hay que rehacer
-- No volver a `<select>` nativo para el idioma.
+- No volver a `<select>` nativo (ni para el idioma ni para la unidad de ejercicio): usar
+  dropdown propio, por coherencia visual con la app y mejor posicionamiento en móvil.
 - No re-aplicar `padding-top` de safe-area en el body (rompe con StatusBar no-overlay). El
   inset **inferior** sí se aplica, pero directamente en los elementos `fixed`/`sticky` que se
   pegan al borde inferior (ver punto 12), no en el body.
