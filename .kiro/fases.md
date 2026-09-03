@@ -137,8 +137,46 @@ Funcionalidades que se pueden agregar después del MVP:
 - [ ] Sync con backend (Supabase) para multi-dispositivo
 - [ ] Temporizador con vibración del dispositivo
 - [ ] Planes de rutina predefinidos
-- [ ] Exportar/importar rutinas
+- [ ] Exportar/importar rutinas (respaldo y migración entre dispositivos) — ver detalle abajo
 - [ ] Modo offline completo con service worker
+
+### 7.x — Exportar / importar rutinas (backup local)
+
+Sin backend: permite respaldar y llevar las rutinas a otro dispositivo mediante un archivo JSON.
+
+**Formato del archivo** (`gymapp-backup-AAAA-MM-DD.json`):
+```json
+{
+  "app": "gymapp",
+  "version": 1,
+  "exportedAt": "2026-09-03T14:00:00.000Z",
+  "days": [ /* contenido de gymapp_days */ ],
+  "routines": [ /* contenido de gymapp_routines */ ]
+}
+```
+- Incluir `version` para validar/migrar formatos futuros.
+- No incluye el catálogo (`exercises.json`, es estático) ni el idioma (preferencia local).
+
+**Exportar:**
+- [ ] `RoutineService.exportData()` → devuelve el objeto de backup (días + rutinas).
+- [ ] Web/desktop: descarga vía `Blob` + `<a download>`.
+- [ ] Android (Capacitor): guardar/compartir el archivo con `@capacitor/filesystem` +
+      `@capacitor/share` (plugins nuevos a instalar). Alternativa mínima: copiar el JSON al
+      portapapeles con `@capacitor/clipboard`.
+
+**Importar:**
+- [ ] Selector de archivo (`<input type="file" accept="application/json">`) o pegar JSON.
+- [ ] `RoutineService.importData(payload, mode)` con validación: comprobar `app`/`version` y
+      forma de `days`/`routines`; rechazar con mensaje claro si no valida.
+- [ ] Modo de importación: **reemplazar** (pisa lo actual) vs **fusionar** (añade días/rutinas).
+      Empezar por *reemplazar* con confirmación; *fusionar* es opcional.
+- [ ] Tras importar: escribir en localStorage y refrescar los signals (`days`/`routines`).
+
+**UI:** botones "Exportar" / "Importar" en la pantalla de configuración (`/setup`), con
+confirmación antes de reemplazar y toast de resultado.
+
+**Tests (Vitest):** round-trip `exportData` → `importData` conserva días y rutinas; import
+inválido no muta el estado; import con `version` desconocida se rechaza.
 
 ---
 

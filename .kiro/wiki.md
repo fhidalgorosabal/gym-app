@@ -98,15 +98,16 @@ nombres revisados a mano), `public/images/tipos/` (íconos de categorías),
 **Extra ya hecho (fuera del plan original):** sistema de idiomas completo (UI + datos).
 **Nombres de ejercicios revisados a mano: 1324/1324** (es/pt-BR), ya incrustados en
 `public/data/exercises.json` (`name_i18n`). El andamiaje de generación (`scripts/`: generador,
-overrides, utilidades) se eliminó tras completar la revisión — ver
-`.kiro/plan-nombres-ejercicios.md` para el histórico y la guía de estilo. Para reeditar un
-nombre puntual hoy: editar directamente `name_i18n` del ejercicio en el JSON.
+overrides, utilidades) se eliminó tras completar la revisión. La guía de estilo se conserva
+en la sección 9 de esta wiki. Para reeditar un nombre puntual hoy: editar directamente
+`name_i18n` del ejercicio en el JSON.
 
 ---
 
 ## 5. Sistema de idiomas (implementado)
 
-Ver planes: `.kiro/plan-idiomas.md` y `.kiro/plan-traduccion-datos.md`.
+Sistema de idiomas completo (UI + datos). Los planes `plan-idiomas.md` y
+`plan-traduccion-datos.md` (completos) se retiraron; su contenido vivo está en esta wiki.
 
 - **Idiomas:** Español (es), Inglés (en), Portugués BR (pt-BR).
 - **Cambio en caliente** vía `LanguageService` (signal), persistido en localStorage
@@ -142,7 +143,7 @@ Cronología de esta línea de trabajo (rama `develop`):
 6. **Revisión manual de nombres (2026-09-01)** — los 1324 nombres de ejercicios revisados a
    mano en es/pt-BR e incrustados en `name_i18n`. Se creó un andamiaje temporal en `scripts/`
    (generador + overrides + utilidades) que **se eliminó al terminar** para no dejar archivos
-   sin uso. Registro y guía de estilo en `.kiro/plan-nombres-ejercicios.md`.
+   sin uso. Guía de estilo conservada en la sección 9 de esta wiki.
 7. **Pipe `capitalize` (2026-09-01)** — `src/app/pipes/capitalize.pipe.ts`. Pone en mayúscula
    la primera letra del nombre al mostrarlo (el inglés viene en minúsculas), respetando
    mayúsculas internas ("V-up", "Press JM"). Aplicado en selector, preview, setup-day y routine.
@@ -220,9 +221,9 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 
 ## 8. Cómo retomar en una nueva sesión
 
-1. Lee este archivo y luego `.kiro/fases.md`, `.kiro/plan-idiomas.md`,
-   `.kiro/plan-traduccion-datos.md` y `.kiro/plan-nombres-ejercicios.md` (registro de la
-   revisión manual de nombres, ya completa).
+1. Lee este archivo (es la fuente de verdad) y, si necesitas el plan de trabajo futuro,
+   `.kiro/fases.md`. El sistema de idiomas/traducción está completo y documentado aquí (su
+   guía de estilo de nombres está en la sección 9).
 2. Verifica que compila: `npm run build`.
 3. Para probar en móvil: `npx cap sync android` y `npx cap run android`.
 4. Rama de trabajo: `develop`.
@@ -246,8 +247,8 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
   dark mode, accesibilidad, **PWA** (ya hay `icons/*.webp` y `manifest.webmanifest` traídos de
   PlanixFit; el manifest de referencia tenía un bug: declara `image/png` pero los archivos son
   `.webp` — corregir al integrarlo).
-- **Idiomas — pulido opcional (Etapa 3 de `plan-idiomas.md`):** `LOCALE_ID` dinámico para
-  fechas/números.
+- **Idiomas — pulido opcional:** `LOCALE_ID` dinámico para fechas/números (única tarea que
+  quedaba de la etapa 3 del antiguo `plan-idiomas.md`).
 - **Fase 7 — Features avanzados:** historial de entrenamientos, estadísticas, sync con backend, etc.
 
 ### Cosas que NO hay que rehacer
@@ -260,16 +261,56 @@ Commits recientes: `Traducciones de ejercicios`, `Sistema de idiomas es/en/pt-BR
 
 ---
 
-## 9. Índice de documentación (`.kiro/`)
+## 9. Guía de estilo — nombres de ejercicios (`name_i18n`)
+
+> Rescatada de `plan-nombres-ejercicios.md` (ya eliminado). Referencia para reeditar nombres a
+> mano en el JSON. La revisión está completa (1324/1324); esto es solo por si se ajusta alguno.
+
+- **Orden:** sustantivo (ejercicio) primero, luego modificadores.
+  `Jalón lateral alternado`, no "Alterno lateral jalón".
+- **Preposiciones:** usar "de", "con", "en" donde el español lo pide.
+  `Círculos de tobillo`, `Curl con mancuerna`, `Fondo en paralelas`.
+- **Equipamiento:** `con mancuerna(s)`, `con barra`, `en polea`, `en máquina`, `con pesa rusa`.
+- **Concordancia:** género y número correctos (`elevación lateral`, `elevaciones laterales`).
+- **Términos que se mantienen:** `curl`, `press`, `crunch`, `burpee`, `plank`→plancha,
+  `deadlift`→peso muerto, `row`→remo, marcas/nombres propios (Arnold, Zottman, Bulgarian…).
+- **Nombres fitness reconocidos se mantienen tal cual:** `v-up`, `sit-up`→abdominal,
+  `russian twist`→giro ruso, etc. (no forzar traducción descriptiva cuando el término fitness es
+  de uso común).
+- **Términos de calistenia se mantienen tal cual:** `planche`, `front lever`, `back lever`,
+  `maltese`, `human flag`→bandera humana, `dead bug`, `curl-up`, `l-sit`, `landmine`, `v-sit`.
+- **Fracciones/ángulos:** `3/4 sit-up` → *"Abdominal a 3/4"*; `45° side bend` → *"Flexión lateral a 45°"*.
+- **Género del sujeto:** el sufijo "(male)/(female)" del dataset **se omite por defecto**; pero
+  si existe la pareja male+female del mismo ejercicio (dos entradas), se mantiene el marcador
+  traducido "(hombre)/(mujer)" en es y "(homem)/(mulher)" en pt-BR para que no queden idénticos.
+- **pt-BR:** mismas reglas con vocabulario propio (`agachamento`, `supino`, `rosca`, `remada`,
+  `flexão`, `prancha`, `levantamento terra`…).
+- **Glosario por grupo (es / pt-BR):**
+  - Pecho: `bench press`→*press de banca* / *supino*; `chest dip`→*fondo de pecho* / *mergulho de peito*.
+  - Espalda: `pulldown`→*jalón* / *puxada*; `pull-up`→*dominada* / *barra*; `row`→*remo* / *remada*;
+    `shrug`→*encogimiento* / *encolhimento*; `deadlift`→*peso muerto* / *levantamento terra*.
+  - Hombros: `shoulder/overhead press`→*press de hombros* / *desenvolvimento*; `raise`→*elevación* / *elevação*.
+  - Brazos: `curl`→*curl* / *rosca*; `triceps extension`→*extensión de tríceps* / *extensão de tríceps*;
+    `skull crusher`→*press francés* / *tríceps testa*.
+  - Piernas: `squat`→*sentadilla* / *agachamento*; `lunge`→*zancada* / *afundo*;
+    `leg curl`→*curl femoral* / *flexora*; `leg extension`→*extensión de piernas* / *cadeira extensora*.
+  - Pantorrillas: `calf raise`→*elevación de talones* / *elevação de panturrilha*.
+
+---
+
+## 10. Índice de documentación (`.kiro/`)
 
 | Archivo | Contenido |
 |---------|-----------|
 | `wiki.md` | **Este documento** — estado global y traspaso |
-| `fases.md` | Plan de fases 1–7 (con estado) |
-| `plan-idiomas.md` | Sistema de idiomas (UI) por etapas |
-| `plan-traduccion-datos.md` | Traducción de los datos del catálogo por etapas |
+| `fases.md` | Plan de fases 1–7 (con estado); Fases 6–7 pendientes |
 | `README.md` | Visión general y assets del proyecto |
 | `assets.md` | Inventario de recursos |
 | `referencia-planixfit.md` | Análisis de PlanixFit |
 | `setup-capacitor.md` | Guía de compilación a Android |
-| `sqlite-strategy.md` | Estrategia de persistencia (referencia; hoy se usa localStorage) |
+
+> **Docs eliminados (absorbidos en esta wiki):** `plan-idiomas.md` (etapas 1–2 hechas, 3
+> opcional), `plan-traduccion-datos.md` (etapas A–D completas) y `plan-nombres-ejercicios.md`
+> (revisión 1324/1324 completa; su guía de estilo quedó en la sección 9 de arriba).
+> **Descartado:** `sqlite-strategy.md` — no se implementó; la persistencia es localStorage
+> (signals + `localStorage`) y se mantiene así (ver sección 2 y decisiones de diseño).

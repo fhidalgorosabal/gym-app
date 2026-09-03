@@ -26,21 +26,23 @@ Replicar y mejorar la funcionalidad de PlanixFit:
 
 ## Estructura de Documentación
 
+> **La fuente de verdad del estado del proyecto es [wiki.md](./wiki.md).** Empieza por ahí.
+
 | Archivo | Contenido |
 |---------|-----------|
+| [wiki.md](./wiki.md) | **Estado global y traspaso** (qué está hecho, decisiones, próximos pasos) |
+| [fases.md](./fases.md) | Plan de implementación por fases (1–5 completas; 6–7 pendientes) |
 | [assets.md](./assets.md) | Inventario de recursos disponibles (datos, imágenes, videos, traducciones) |
-| [referencia-planixfit.md](./referencia-planixfit.md) | Análisis completo de PlanixFit como referencia de diseño |
-| [setup-capacitor.md](./setup-capacitor.md) | Guía paso a paso para compilar a Android |
-| [sqlite-strategy.md](./sqlite-strategy.md) | Estrategia de persistencia con SQLite (schema, setup, flujo) |
-| [fases.md](./fases.md) | Plan de implementación por fases |
+| [referencia-planixfit.md](./referencia-planixfit.md) | Análisis de PlanixFit como referencia de diseño |
+| [setup-capacitor.md](./setup-capacitor.md) | Guía para compilar a Android |
 
 ## Stack Tecnológico
 
 | Capa | Tecnología |
 |------|-----------|
-| Framework | Angular 22.1 (standalone components) |
+| Framework | Angular 22.1 (standalone components, signals) |
 | Estilos | Tailwind CSS v4 + PostCSS |
 | Testing | Vitest |
-| Mobile | Capacitor (pendiente de instalar) |
-| Persistencia | SQLite local (@capacitor-community/sqlite + jeep-sqlite para browser) |
+| Mobile | Capacitor 8 (Android) |
+| Persistencia | localStorage (offline-first) |
 | Formato | Prettier |

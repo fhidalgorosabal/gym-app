@@ -26,7 +26,8 @@ hecho, decisiones, próximos pasos, cómo compilar). No la reproduzcas aquí; co
   El andamiaje de generación en `scripts/` ya se eliminó; para reeditar, editar el JSON directamente.
 
 ## Planes y estado (detalle en `.kiro/`)
-- `wiki.md` — estado global y traspaso.
+- `wiki.md` — estado global y traspaso (fuente de verdad). Incluye la guía de estilo de nombres.
 - `fases.md` — fases 1–5 completas; 6 (pulido/UX) y 7 (avanzado) pendientes.
-- `plan-idiomas.md` — etapas 1–2 hechas; etapa 3 (fechas/números) opcional pendiente.
-- `plan-traduccion-datos.md` — etapas A–D completas.
+- Idiomas y traducción de datos: **completos**, documentados en `wiki.md` (los planes
+  `plan-idiomas.md` / `plan-traduccion-datos.md` / `plan-nombres-ejercicios.md` se retiraron
+  al quedar absorbidos por la wiki).

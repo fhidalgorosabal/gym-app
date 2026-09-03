@@ -8,7 +8,8 @@ import { Lang } from '../services/language.service';
  * (en minúsculas) y el valor es la traducción. Si un término no está en el mapa,
  * se devuelve el original en inglés (fallback).
  *
- * NOTA: los nombres de ejercicios (`name`) NO se traducen aquí — ver plan-traduccion-datos.md.
+ * NOTA: los nombres de ejercicios (`name`) NO se traducen aquí — se resuelven vía `name_i18n`
+ * en el JSON (ver `.kiro/wiki.md`, secciones 5 y 9).
  */
 
 const es: Record<string, string> = {
